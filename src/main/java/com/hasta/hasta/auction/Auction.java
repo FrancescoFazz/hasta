@@ -21,8 +21,12 @@ public class Auction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private int quantitySold;
+
+    @Column(nullable = false)
     private Double startingPrice;
+
     private Double finalPrice;
 
     @CreationTimestamp
