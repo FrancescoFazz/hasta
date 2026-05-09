@@ -1,6 +1,7 @@
 package com.hasta.hasta.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Email
     @Column(nullable = false, unique = true)
     private String email;
 
