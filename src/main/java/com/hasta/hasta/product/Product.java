@@ -11,14 +11,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-    private int quantity;
+    private Integer quantity;
     private String category;
 
     @ManyToOne
