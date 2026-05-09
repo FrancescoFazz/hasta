@@ -16,25 +16,21 @@ public class UserService {
     }
 
     @Transactional
-    public void addUser(String username, String password, String email, String name,
-                        String surname, String role, Gender gender) {
+    public User addUser(CreateUserRequest request) {
 
-        if (username == null || username.isBlank()) throw new IllegalArgumentException("username required");
-        if (password == null || password.isBlank()) throw new IllegalArgumentException("password required");
-        if (email == null || email.isBlank()) throw new IllegalArgumentException("email required");
-
-        if (userRepository.findByUsername(username).isPresent()) throw new IllegalArgumentException("username already exists");
-        if (userRepository.findByEmail(email).isPresent()) throw new IllegalArgumentException("email already exists");
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) throw new IllegalArgumentException("username already exists");
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) throw new IllegalArgumentException("email already exists");
 
         User u = new User();
-        u.setUsername(username);
-        u.setPassword(password);
-        u.setEmail(email);
-        u.setName(name);
-        u.setSurname(surname);
-        u.setRole(role);
-        u.setGender(gender);
+        u.setUsername(request.getUsername());
+        u.setPassword(request.getPassword());
+        u.setEmail(request.getEmail());
+        u.setName(request.getName());
+        u.setSurname(request.getSurname());
+        u.setRole(request.getRole());
+        u.setGender(request.getGender());
         userRepository.save(u);
+        return u;
     }
 
     @Transactional(readOnly = true)
@@ -55,5 +51,12 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<User> getUserById(long id) {
         return userRepository.findById(id);
+    }
+
+    @Transactional
+    public void deleteUser(Long id) {
+        if (!userRepository.existsById(id))
+            throw new IllegalArgumentException("user not found");
+        userRepository.deleteById(id);
     }
 }

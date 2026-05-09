@@ -1,7 +1,9 @@
 package com.hasta.hasta.product;
 
+import com.hasta.hasta.auction.AuctionRepository;
+import com.hasta.hasta.user.UserRepository;
+import jdk.jfr.TransitionTo;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hasta.hasta.user.User;
 
@@ -10,16 +12,28 @@ import java.util.Optional;
 
 @Service
 public class ProductService {
-    @Autowired
-    private ProductRepository productRepository;
-    public void addProduct(String name, String description, int quantity, String category, User seller){
+
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+
+    public ProductService(UserRepository userRepository,
+                          ProductRepository productRepository) {
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
+    }
+
+    @Transactional
+    public Product addProduct(CreateProductRequest request){
+
+        User seller = userRepository.getReferenceById(request.getSellerId());
+
         Product p = new Product();
-        p.setName(name);
-        p.setDescription(description);
-        p.setQuantity(quantity);
-        p.setDescription(description);
+        p.setName(request.getName());
+        p.setDescription(request.getDescription());
+        p.setQuantity(request.getQuantity());
         p.setSeller(seller);
         productRepository.save(p);
+        return p;
     }
 
     @Transactional(readOnly = true)
