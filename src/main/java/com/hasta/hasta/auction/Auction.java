@@ -10,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
@@ -25,9 +26,9 @@ public class Auction {
     private int quantitySold;
 
     @Column(nullable = false)
-    private Double startingPrice;
+    private BigDecimal startingPrice;
 
-    private Double finalPrice;
+    private BigDecimal finalPrice;
 
     @CreationTimestamp
     private Instant startTime;
