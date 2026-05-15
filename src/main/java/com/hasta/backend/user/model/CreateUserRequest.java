@@ -1,4 +1,4 @@
-package com.hasta.backend.user;
+package com.hasta.backend.user.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -18,8 +18,6 @@ public class CreateUserRequest {
     private String name;
     @NotBlank
     private String surname;
-    @NotBlank
-    private String role;
     @NotNull
     private Gender gender;
 }

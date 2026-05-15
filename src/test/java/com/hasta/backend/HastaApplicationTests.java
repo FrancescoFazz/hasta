@@ -1,4 +1,4 @@
-package com.hasta.hasta;
+package com.hasta.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

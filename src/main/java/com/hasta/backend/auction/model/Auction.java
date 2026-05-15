@@ -1,7 +1,7 @@
-package com.hasta.backend.auction;
+package com.hasta.backend.auction.model;
 
-import com.hasta.backend.product.Product;
-import com.hasta.backend.user.User;
+import com.hasta.backend.product.model.Product;
+import com.hasta.backend.user.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

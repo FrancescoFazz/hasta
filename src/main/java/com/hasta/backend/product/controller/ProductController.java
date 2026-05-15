@@ -1,5 +1,8 @@
-package com.hasta.backend.product;
+package com.hasta.backend.product.controller;
 
+import com.hasta.backend.product.service.ProductService;
+import com.hasta.backend.product.model.CreateProductRequest;
+import com.hasta.backend.product.model.Product;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,10 +51,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.getAvailable());
     }
 
-    @PatchMapping("/{id}/quantity")
-    public ResponseEntity<Product> updateQuantity(@PathVariable Long id, @RequestParam int quantity) {
-        return ResponseEntity.ok(productService.updateQuantity(id, quantity));
-    }
 
     @GetMapping("/search")
     public ResponseEntity<List<Product>> search(@RequestParam String keyword) {

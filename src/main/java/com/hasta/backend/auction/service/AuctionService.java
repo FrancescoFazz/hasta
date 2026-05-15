@@ -1,9 +1,13 @@
-package com.hasta.backend.auction;
+package com.hasta.backend.auction.service;
 
-import com.hasta.backend.product.Product;
-import com.hasta.backend.product.ProductRepository;
-import com.hasta.backend.user.User;
-import com.hasta.backend.user.UserRepository;
+import com.hasta.backend.auction.model.Auction;
+import com.hasta.backend.auction.repository.AuctionRepository;
+import com.hasta.backend.auction.model.CreateAuctionRequest;
+import com.hasta.backend.product.model.Product;
+import com.hasta.backend.product.repository.ProductRepository;
+import com.hasta.backend.user.model.User;
+import com.hasta.backend.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,18 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AuctionService {
     private final AuctionRepository auctionRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-
-    public AuctionService(AuctionRepository auctionRepository,
-                          UserRepository userRepository,
-                          ProductRepository productRepository) {
-        this.auctionRepository = auctionRepository;
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-    }
 
     @Transactional
     public Auction addAuction(CreateAuctionRequest request) {

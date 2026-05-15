@@ -1,4 +1,4 @@
-package com.hasta.backend.user;
+package com.hasta.backend.user.model;
 
 public enum Gender {
     MALE, FEMALE

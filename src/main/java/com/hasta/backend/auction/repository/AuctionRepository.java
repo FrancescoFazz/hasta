@@ -1,6 +1,7 @@
-package com.hasta.backend.auction;
+package com.hasta.backend.auction.repository;
 
-import com.hasta.backend.user.User;
+import com.hasta.backend.auction.model.Auction;
+import com.hasta.backend.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
