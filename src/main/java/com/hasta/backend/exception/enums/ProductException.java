@@ -1,19 +1,16 @@
-package com.hasta.backend.exception;
+package com.hasta.backend.exception.enums;
 
+import com.hasta.backend.exception.ApplicationExceptionEnum;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-public enum ProductException implements ApplicationExceptionEnum{
-    NOT_FOUND("product.not-found", "Product not found", 404);
+@RequiredArgsConstructor
+public enum ProductException implements ApplicationExceptionEnum {
+    NOT_FOUND("product.not-found", "Product not found", 404),
+    ALREADY_EXISTS("product.already-exists", "Product already exists", 409);
+
     private final String code;
     private final String message;
-    private final int status;
-    ProductException(String code, String message, int status) {
-        this.code = code;
-        this.message = message;
-        this.status = status;
-    }
-    @Override public String getCode() { return code; }
-    @Override public String getMessage() { return message; }
-    @Override public int getHttpStatusCode() { return httpStatusCode; }
+    private final int httpStatusCode;
 }

@@ -1,5 +1,8 @@
-package com.hasta.backend.auction;
+package com.hasta.backend.auction.controller;
 
+import com.hasta.backend.auction.model.Auction;
+import com.hasta.backend.auction.model.CreateAuctionRequest;
+import com.hasta.backend.auction.service.AuctionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

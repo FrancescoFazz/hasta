@@ -1,4 +1,4 @@
-package com.hasta.backend.user;
+package com.hasta.backend.user.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -26,7 +26,6 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Email
     @Column(nullable = false, unique = true)
     private String email;
 
