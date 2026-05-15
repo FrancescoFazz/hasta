@@ -1,4 +1,4 @@
-package com.hasta.hasta.user;
+package com.hasta.backend.user;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.hasta.hasta.product;
+package com.hasta.backend.product;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package com.hasta.hasta.auction;
+package com.hasta.backend.auction;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

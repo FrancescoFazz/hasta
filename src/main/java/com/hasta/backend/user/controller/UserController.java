@@ -1,4 +1,4 @@
-package com.hasta.hasta.user;
+package com.hasta.backend.user;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

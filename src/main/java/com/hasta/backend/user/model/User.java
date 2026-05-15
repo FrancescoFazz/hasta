@@ -1,4 +1,4 @@
-package com.hasta.hasta.user;
+package com.hasta.backend.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

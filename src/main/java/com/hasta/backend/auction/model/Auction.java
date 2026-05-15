@@ -1,14 +1,12 @@
-package com.hasta.hasta.auction;
+package com.hasta.backend.auction;
 
-import com.hasta.hasta.product.Product;
-import com.hasta.hasta.user.User;
+import com.hasta.backend.product.Product;
+import com.hasta.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedBy;
 
 import java.math.BigDecimal;
 import java.time.Instant;

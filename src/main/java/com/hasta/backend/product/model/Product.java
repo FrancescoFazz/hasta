@@ -1,6 +1,6 @@
-package com.hasta.hasta.product;
+package com.hasta.backend.product;
 
-import com.hasta.hasta.user.User;
+import com.hasta.backend.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
