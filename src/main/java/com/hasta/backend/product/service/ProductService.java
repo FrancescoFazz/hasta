@@ -1,11 +1,9 @@
-package com.hasta.hasta.product;
+package com.hasta.backend.product;
 
-import com.hasta.hasta.auction.AuctionRepository;
-import com.hasta.hasta.user.UserRepository;
-import jdk.jfr.TransitionTo;
+import com.hasta.backend.user.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-import com.hasta.hasta.user.User;
+import com.hasta.backend.user.User;
 
 import java.util.List;
 import java.util.Optional;

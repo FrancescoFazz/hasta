@@ -1,9 +1,9 @@
-package com.hasta.hasta.auction;
+package com.hasta.backend.auction;
 
-import com.hasta.hasta.product.Product;
-import com.hasta.hasta.product.ProductRepository;
-import com.hasta.hasta.user.User;
-import com.hasta.hasta.user.UserRepository;
+import com.hasta.backend.product.Product;
+import com.hasta.backend.product.ProductRepository;
+import com.hasta.backend.user.User;
+import com.hasta.backend.user.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,4 +1,4 @@
-package com.hasta.hasta.product;
+package com.hasta.backend.product;
 
 import java.util.*;
 import org.springframework.data.jpa.repository.JpaRepository;
