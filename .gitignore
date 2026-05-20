@@ -36,3 +36,4 @@ application-local.yml
 server.crt
 server.csr
 server.key
+certificate.p12
