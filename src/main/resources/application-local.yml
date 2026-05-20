@@ -1,4 +1,5 @@
-ssl:
-  key-store-password: hasta
-  key-store-type: PKCS12
-  key-store: /home/Fra/IdeaProjects/hasta/certificate.p12
+server:
+  ssl:
+    key-store-password : password_certificate
+    key-store-type: PKCS12
+    key-store: C:\Users\Alessandro\Desktop\hasta\certificate.p12
