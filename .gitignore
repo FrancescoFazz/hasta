@@ -33,3 +33,6 @@ build/
 .vscode/
 .env
 application-local.yml
+server.crt
+server.csr
+server.key
