@@ -32,29 +32,25 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAll() {
+    public ResponseEntity<List<Product>> getAll(
+        @RequestParam(required = false) Long sellerId,
+        @RequestParam(required = false) String category,
+        @RequestParam(required = false) Boolean available,
+        @RequestParam(required = false) String keyword){
+
+        if(sellerId != null){
+            return ResponseEntity.ok(productService.getBySeller(sellerId));
+        }
+        if(category != null){
+            return ResponseEntity.ok(productService.getByCategory(category));
+        }
+        if(available != null && available){
+            return ResponseEntity.ok(productService.getAvailable());
+        }
+        if(keyword != null){
+            return ResponseEntity.ok(productService.search(keyword));
+        }
         return ResponseEntity.ok(productService.getAll());
-    }
-
-    @GetMapping("/seller/{sellerId}")
-    public ResponseEntity<List<Product>> getBySeller(@PathVariable Long sellerId) {
-        return ResponseEntity.ok(productService.getBySeller(sellerId));
-    }
-
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<Product>> getByCategory(@PathVariable String category) {
-        return ResponseEntity.ok(productService.getByCategory(category));
-    }
-
-    @GetMapping("/available")
-    public ResponseEntity<List<Product>> getAvailable() {
-        return ResponseEntity.ok(productService.getAvailable());
-    }
-
-
-    @GetMapping("/search")
-    public ResponseEntity<List<Product>> search(@RequestParam String keyword) {
-        return ResponseEntity.ok(productService.search(keyword));
     }
 
     @PutMapping("/{id}")
