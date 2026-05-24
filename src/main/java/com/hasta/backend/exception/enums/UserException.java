@@ -8,7 +8,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum UserException implements ApplicationExceptionEnum {
     ALREADY_EXISTS("user.already-exists", "User already exists", 409),
-    NOT_FOUND("user.not-found", "User not found", 404);
+    NOT_FOUND("user.not-found", "User not found", 404),
+    KEYCLOAK_ERROR("user.keycloak-error", "Failed to create user on Keycloak", 500);
 
     private final String code;
     private final String message;

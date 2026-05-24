@@ -4,7 +4,6 @@ import com.hasta.backend.exception.ApplicationExceptionEnum;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-
 @Getter
 @RequiredArgsConstructor
 public enum CommonException implements ApplicationExceptionEnum {

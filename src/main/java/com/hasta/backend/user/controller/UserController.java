@@ -20,12 +20,14 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody @Valid CreateUserRequest request) {
-        return userService.addUser(request);
+        return userService.createUser(request);
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.findAll();
+    public List<User> getAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return userService.findAll(page, size);
     }
 
     @GetMapping("/{id}")
