@@ -5,10 +5,16 @@ import com.hasta.backend.exception.enums.UserException;
 import com.hasta.backend.user.model.CreateUserRequest;
 import com.hasta.backend.user.model.User;
 import com.hasta.backend.user.repository.UserRepository;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
+import org.keycloak.representations.idm.CredentialRepresentation;
+import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.keycloak.admin.client.Keycloak;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.List;
 
@@ -16,6 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final Keycloak keycloak;
+    @Value("${keycloak.realm}")
+    private String realm;
     private final UserRepository userRepository;
 
     @Transactional
@@ -26,9 +35,25 @@ public class UserService {
         if (userRepository.findByEmail(request.getEmail()).isPresent())
             throw new ApplicationException(UserException.ALREADY_EXISTS);
 
+        CredentialRepresentation credential = new CredentialRepresentation();
+        credential.setTemporary(false);
+        credential.setType(CredentialRepresentation.PASSWORD);
+        credential.setValue(request.getPassword());
+
+        UserRepresentation kcUser = new UserRepresentation();
+        kcUser.setUsername(request.getUsername());
+        kcUser.setEmail(request.getEmail());
+        kcUser.setEnabled(true);
+        kcUser.setCredentials(List.of(credential));
+
+        Response response = keycloak.realm(realm).users().create(kcUser);
+
+        if (response.getStatus() != 201) {
+            throw new ApplicationException(UserException.KEYCLOAK_ERROR);
+        }
+
         User u = new User();
         u.setUsername(request.getUsername());
-        u.setPassword(request.getPassword());
         u.setEmail(request.getEmail());
         u.setName(request.getName());
         u.setSurname(request.getSurname());
@@ -49,8 +74,9 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<User> findAll(@RequestParam int page, @RequestParam int size) {
-        return userRepository.getUsersWithPagination(page, size);
+    public List<User> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable).getContent();
     }
 
     @Transactional(readOnly = true)

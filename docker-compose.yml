@@ -14,7 +14,7 @@ services:
     command:
       - start-dev
     ports:
-      - 8080:8080
+      - 8180:8080
     volumes:
       - ./keycloak/:/opt/keycloak/data/import/
     environment:
