@@ -45,6 +45,8 @@ public class UserService {
         kcUser.setEmail(request.getEmail());
         kcUser.setEnabled(true);
         kcUser.setCredentials(List.of(credential));
+        kcUser.setEmailVerified(true);
+        kcUser.setRequiredActions(List.of());
 
         Response response = keycloak.realm(realm).users().create(kcUser);
 
@@ -58,6 +60,7 @@ public class UserService {
         u.setName(request.getName());
         u.setSurname(request.getSurname());
         u.setGender(request.getGender());
+        u.setRole("USER");
         return userRepository.save(u);
     }
 
