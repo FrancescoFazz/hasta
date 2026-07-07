@@ -12,6 +12,9 @@ public class KeycloakConfig {
     @Value("${keycloak.server-url}")
     private String serverUrl;
 
+    @Value("${keycloak.realm}")
+    private String realm;
+
     @Value("${keycloak.admin-username}")
     private String adminUsername;
 
@@ -20,7 +23,6 @@ public class KeycloakConfig {
 
     @Bean
     public Keycloak keycloak() {
-
         return KeycloakBuilder.builder()
                 .serverUrl(serverUrl)
                 .realm("master")
