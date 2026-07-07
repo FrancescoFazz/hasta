@@ -1,0 +1,18 @@
+<h2>Prodotti disponibili</h2>
+
+@if (loading()) {
+<p>Caricamento in corso...</p>
+} @else if (error()) {
+<p class="error">{{ error() }}</p>
+} @else if (products().length === 0) {
+<p>Nessun prodotto disponibile.</p>
+} @else {
+<ul>
+  @for (product of products(); track product.id) {
+  <li>
+    <strong>{{ product.name }}</strong> — {{ product.category }}
+    <span class="price">{{ product.available ? 'Disponibile' : 'Non disponibile' }}</span>
+  </li>
+  }
+</ul>
+}
