@@ -4,8 +4,10 @@ import com.hasta.backend.user.service.UserService;
 import com.hasta.backend.user.model.CreateUserRequest;
 import com.hasta.backend.user.model.User;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -19,6 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
+    @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody @Valid CreateUserRequest request) {
         return userService.createUser(request);
     }
@@ -33,5 +36,15 @@ public class UserController {
     @GetMapping("/{id}")
     public User getUser(@PathVariable long id) {
         return userService.getUserById(id);
+    }
+
+    @GetMapping("/{id}/balance")
+    public BigDecimal getBalance(@PathVariable Long id) {
+        return userService.getBalance(id);
+    }
+
+    @PostMapping("/{id}/charge")
+    public User chargeCredit(@PathVariable Long id, @RequestParam BigDecimal amount) {
+        return userService.addCredit(id, amount);
     }
 }

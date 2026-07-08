@@ -18,4 +18,7 @@ public class CreateAuctionRequest {
 
     @NotNull
     private Long productId;
+
+    @NotNull
+    private java.time.Instant endTime;
 }

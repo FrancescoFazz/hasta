@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.keycloak.admin.client.Keycloak;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -91,5 +92,37 @@ public class UserService {
     @Transactional
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public BigDecimal getBalance(Long userId) {
+        User user = getUserById(userId);
+        return user.getBalance();
+    }
+
+    @Transactional
+    public User addCredit(Long userId, BigDecimal amount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ApplicationException(UserException.INVALID_AMOUNT);
+        }
+
+        User user = getUserById(userId);
+        user.setBalance(user.getBalance().add(amount));
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public User deductCredit(Long userId, BigDecimal amount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new ApplicationException(UserException.INVALID_AMOUNT);
+        }
+
+        User user = getUserById(userId);
+
+        if (user.getBalance().compareTo(amount) < 0) {
+            throw new ApplicationException(UserException.INSUFFICIENT_CREDIT);
+        }
+
+        user.setBalance(user.getBalance().subtract(amount));
+        return userRepository.save(user);
     }
 }

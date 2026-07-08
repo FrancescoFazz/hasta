@@ -6,12 +6,10 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum UserException implements ApplicationExceptionEnum {
-    ALREADY_EXISTS("user.already-exists", "User already exists", 409),
-    NOT_FOUND("user.not-found", "User not found", 404),
-    KEYCLOAK_ERROR("user.keycloak-error", "Failed to create user on Keycloak", 500),
-    INSUFFICIENT_CREDIT("user.insufficient-credit", "Insufficient credit to complete operation", 400),
-    INVALID_AMOUNT("user.invalid-amount", "Amount must be greater than zero", 400);
+public enum AuctionException implements ApplicationExceptionEnum {
+    NOT_FOUND("auction.not-found", "Auction not found", 404),
+    ALREADY_CLOSED("auction.already-closed", "Auction is already closed", 400),
+    PAST_END_TIME("auction.past-end-time", "Auction end time must be in the future", 400);
 
     private final String code;
     private final String message;

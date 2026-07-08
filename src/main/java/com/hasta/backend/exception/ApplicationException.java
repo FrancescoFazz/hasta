@@ -14,6 +14,7 @@ public class ApplicationException extends RuntimeException {
     private final long timestamp = System.currentTimeMillis();
 
     public ApplicationException(ApplicationExceptionEnum exceptionEnum) {
+
         this.code = exceptionEnum.getCode();
         this.message = exceptionEnum.getMessage();
         this.httpStatusCode = exceptionEnum.getHttpStatusCode();
