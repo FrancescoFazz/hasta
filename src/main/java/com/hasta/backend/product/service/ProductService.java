@@ -3,6 +3,7 @@ package com.hasta.backend.product.service;
 import com.hasta.backend.exception.ApplicationException;
 import com.hasta.backend.exception.enums.ProductException;
 import com.hasta.backend.exception.enums.UserException;
+import com.hasta.backend.product.model.Categories;
 import com.hasta.backend.product.model.CreateProductRequest;
 import com.hasta.backend.product.model.Product;
 import com.hasta.backend.product.repository.ProductRepository;
@@ -55,7 +56,8 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<Product> getByCategory(String category) {
-        return productRepository.findByCategory(category);
+
+        return productRepository.findByCategory(Categories.valueOf(category.toUpperCase()));
     }
 
     @Transactional(readOnly = true)

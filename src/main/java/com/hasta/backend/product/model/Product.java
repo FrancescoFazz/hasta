@@ -24,7 +24,8 @@ public class Product {
     private Integer quantity;
 
     @Column(nullable = false)
-    private String category;
+    @Enumerated(EnumType.STRING)
+    private Categories category;
 
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)

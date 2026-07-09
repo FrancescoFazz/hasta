@@ -3,8 +3,11 @@ package com.hasta.backend.auction.service;
 import com.hasta.backend.auction.model.Auction;
 import com.hasta.backend.auction.repository.AuctionRepository;
 import com.hasta.backend.auction.model.CreateAuctionRequest;
+import com.hasta.backend.bid.model.Bid;
+import com.hasta.backend.bid.repository.BidRepository;
 import com.hasta.backend.exception.ApplicationException;
 import com.hasta.backend.exception.enums.AuctionException;
+import com.hasta.backend.exception.enums.UserException;
 import com.hasta.backend.product.model.Product;
 import com.hasta.backend.product.repository.ProductRepository;
 import com.hasta.backend.user.model.User;
@@ -26,6 +29,7 @@ public class AuctionService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final UserService userService;
+    private final BidRepository bidRepository;
 
     @Transactional
     public Auction addAuction(CreateAuctionRequest request) {
@@ -54,30 +58,87 @@ public class AuctionService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Auction> findById(Long id) {
-        return auctionRepository.findById(id);
+    public Auction findById(Long id) {
+        return auctionRepository.findById(id)
+                .orElseThrow(() -> new ApplicationException(AuctionException.NOT_FOUND));
     }
 
     @Transactional
-    public void closeAuction(Long id, Long winnerId, BigDecimal finalPrice) {
-        Auction auction = auctionRepository.findById(id)
+    public void closeAuction(Long id) { // Rimosso winnerId e finalPrice dai parametri
+        Auction auction = auctionRepository.findByIdForUpdate(id)
                 .orElseThrow(() -> new ApplicationException(AuctionException.NOT_FOUND));
 
-        if (auction.isSold()) {
+        if (auction.isSold() || auction.getFinalPrice() != null) {
             throw new ApplicationException(AuctionException.ALREADY_CLOSED);
         }
-
-        userService.deductCredit(winnerId, finalPrice);
-
-        User winner = userRepository.getReferenceById(winnerId);
-        auction.setWinner(winner);
-        auction.setFinalPrice(finalPrice);
 
         if (auction.getEndTime().isAfter(Instant.now())) {
             auction.setEndTime(Instant.now());
         }
 
-        auction.setSold(true);
+        if (auction.getWinner() != null) {
+            auction.setSold(true);
+            auction.setFinalPrice(auction.getCurrentPrice());
+            User seller = auction.getSeller();
+            User sellerLocked = userRepository.findByIdForUpdate(seller.getId())
+                    .orElseThrow(() -> new ApplicationException(UserException.NOT_FOUND));
+
+            sellerLocked.setBalance(sellerLocked.getBalance().add(auction.getFinalPrice()));
+            userRepository.save(sellerLocked);
+        } else {
+            auction.setSold(false);
+            auction.setFinalPrice(BigDecimal.ZERO);
+        }
+
         auctionRepository.save(auction);
+    }
+
+    @Transactional
+    public void placeBid(Long auctionId, Long userId, BigDecimal bidAmount) {
+        Auction auction = auctionRepository.findByIdForUpdate(auctionId)
+                .orElseThrow(() -> new ApplicationException(AuctionException.NOT_FOUND));
+
+        if (auction.isSold() || (auction.getEndTime() != null && Instant.now().isAfter(auction.getEndTime()))) {
+            throw new ApplicationException(AuctionException.ALREADY_CLOSED);
+        }
+
+        if (auction.getWinner() != null && auction.getWinner().getId().equals(userId)) {
+            throw new ApplicationException(AuctionException.ALREADY_HIGHEST_BIDDER);
+        }
+
+        BigDecimal minimumPriceRequired = (auction.getCurrentPrice() != null && auction.getCurrentPrice().compareTo(BigDecimal.ZERO) > 0)
+                ? auction.getCurrentPrice()
+                : auction.getStartingPrice();
+
+        if (bidAmount.compareTo(minimumPriceRequired) <= 0) {
+            throw new ApplicationException(AuctionException.BID_TOO_LOW);
+        }
+
+        User newUser = userRepository.findByIdForUpdate(userId)
+                .orElseThrow(() -> new ApplicationException(UserException.NOT_FOUND));
+
+        if (newUser.getBalance().compareTo(bidAmount) < 0) {
+            throw new ApplicationException(UserException.INSUFFICIENT_CREDIT);
+        }
+
+        User previousWinner = auction.getWinner();
+        if (previousWinner != null) {
+            User prevUserLocked = userRepository.findByIdForUpdate(previousWinner.getId()).get();
+            prevUserLocked.setBalance(prevUserLocked.getBalance().add(auction.getCurrentPrice()));
+            userRepository.save(prevUserLocked);
+        }
+
+        newUser.setBalance(newUser.getBalance().subtract(bidAmount));
+        userRepository.save(newUser);
+
+        auction.setCurrentPrice(bidAmount);
+        auction.setWinner(newUser);
+        auctionRepository.save(auction);
+
+        Bid bid = new Bid();
+        bid.setAmount(bidAmount);
+        bid.setUser(newUser);
+        bid.setAuction(auction);
+        bidRepository.save(bid);
     }
 }

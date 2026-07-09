@@ -5,6 +5,7 @@ import com.hasta.backend.user.model.CreateUserRequest;
 import com.hasta.backend.user.model.User;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -47,4 +48,10 @@ public class UserController {
     public User chargeCredit(@PathVariable Long id, @RequestParam BigDecimal amount) {
         return userService.addCredit(id, amount);
     }
+
+    @PutMapping("/{id}/role")
+    public User changeUserRole(@PathVariable Long id, @RequestParam String role) {
+        return userService.updateUserRole(id, role);
+    }
+
 }
