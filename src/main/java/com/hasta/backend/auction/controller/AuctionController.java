@@ -2,15 +2,13 @@ package com.hasta.backend.auction.controller;
 
 import com.hasta.backend.auction.model.Auction;
 import com.hasta.backend.auction.model.CreateAuctionRequest;
+import com.hasta.backend.auction.model.PlaceBidRequest;
 import com.hasta.backend.auction.service.AuctionService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auctions")
@@ -23,27 +21,31 @@ public class AuctionController {
     }
 
     @PostMapping
-    public ResponseEntity<Auction> createAuction(@RequestBody @Valid CreateAuctionRequest request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(auctionService.addAuction(request));
+    @ResponseStatus(HttpStatus.CREATED)
+    public Auction createAuction(@RequestBody @Valid CreateAuctionRequest request){
+        return auctionService.addAuction(request);
     }
 
     @GetMapping
-    public ResponseEntity<List<Auction>> findAll(){
-        return ResponseEntity.ok(auctionService.findAll());
+    public List<Auction> getAllAuctions() {
+        return auctionService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Auction>> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(auctionService.findById(id));
+    public Auction getAuction(@PathVariable Long id) {
+        return auctionService.findById(id);
     }
 
     @PutMapping("/{id}/close")
-    public ResponseEntity<Void> closeAuction(
-            @PathVariable Long id,
-            @RequestParam Long winnerId,
-            @RequestParam BigDecimal finalPrice){
-        auctionService.closeAuction(id, winnerId, finalPrice);
-        return ResponseEntity.noContent().build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void closeAuction(@PathVariable Long id) {
+        auctionService.closeAuction(id);
     }
 
+    @PostMapping("/{id}/bids")
+    public void placeBid(
+            @PathVariable Long id,
+            @RequestBody @Valid PlaceBidRequest request) {
+        auctionService.placeBid(id, request.getUserId(), request.getAmount());
+    }
 }

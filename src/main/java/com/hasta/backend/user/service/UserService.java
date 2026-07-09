@@ -61,6 +61,7 @@ public class UserService {
         u.setName(request.getName());
         u.setSurname(request.getSurname());
         u.setGender(request.getGender());
+        u.setBalance(BigDecimal.ZERO);
         u.setRole("USER");
         return userRepository.save(u);
     }
@@ -87,11 +88,6 @@ public class UserService {
     public User getUserById(long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ApplicationException(UserException.NOT_FOUND));
-    }
-
-    @Transactional
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
     }
 
     public BigDecimal getBalance(Long userId) {
@@ -123,6 +119,19 @@ public class UserService {
         }
 
         user.setBalance(user.getBalance().subtract(amount));
+        return userRepository.save(user);
+    }
+
+    @Transactional
+    public User updateUserRole(Long userId, String newRole) {
+        if (!"ADMIN".equals(newRole) && !"USER".equals(newRole)) {
+            throw new ApplicationException(UserException.INVALID_AMOUNT);
+        }
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ApplicationException(UserException.NOT_FOUND));
+
+        user.setRole(newRole);
         return userRepository.save(user);
     }
 }

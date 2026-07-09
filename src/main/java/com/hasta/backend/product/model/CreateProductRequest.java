@@ -13,8 +13,8 @@ public class CreateProductRequest {
     private String description;
     @NotNull
     private Integer quantity;
-    @NotBlank
-    private String category;
+    @NotNull
+    private Categories category;
     @NotNull
     private Long sellerId;
 }
