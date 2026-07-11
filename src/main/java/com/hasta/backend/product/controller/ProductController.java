@@ -1,8 +1,10 @@
 package com.hasta.backend.product.controller;
 
+import com.hasta.backend.product.model.PurchaseRequest;
 import com.hasta.backend.product.service.ProductService;
 import com.hasta.backend.product.model.CreateProductRequest;
 import com.hasta.backend.product.model.Product;
+import com.hasta.backend.purchase.model.Purchase;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +64,13 @@ public class ProductController {
     public ResponseEntity<Void> delete(@PathVariable Long id){
         productService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/purchase")
+    public ResponseEntity<Purchase> buyNow(
+            @PathVariable Long id,
+            @RequestBody @Valid PurchaseRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.buyNow(id, request.getBuyerId()));
     }
 
 }
