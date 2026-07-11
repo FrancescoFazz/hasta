@@ -3,6 +3,10 @@ export interface Product {
   name: string;
   description: string;
   category: string;
-  sellerID: number;
-  available: boolean;
+  price: number;
+  quantity: number;
+  seller: {
+    id: number;
+    username: string;
+  };
 }

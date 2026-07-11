@@ -1,5 +1,19 @@
 <h2>Prodotti disponibili</h2>
 
+<div class="buyer-id-input">
+  <label>
+    Il tuo buyerId (temporaneo, in attesa di Keycloak):
+    <input type="number" [(ngModel)]="buyerId" placeholder="es. 2" />
+  </label>
+</div>
+
+@if (purchaseSuccessMessage()) {
+<p class="success">{{ purchaseSuccessMessage() }}</p>
+}
+@if (purchaseError()) {
+<p class="error">{{ purchaseError() }}</p>
+}
+
 @if (loading()) {
 <p>Caricamento in corso...</p>
 } @else if (error()) {
@@ -10,8 +24,20 @@
 <ul>
   @for (product of products(); track product.id) {
   <li>
-    <strong>{{ product.name }}</strong> — {{ product.category }}
-    <span class="price">{{ product.available ? 'Disponibile' : 'Non disponibile' }}</span>
+    <strong>{{ product.name }}</strong> — {{ product.category }} — {{ product.price }}€
+    <span class="quantity">{{ product.quantity > 0 ? 'Disponibile' : 'Esaurito' }}</span>
+
+    @if (product.quantity > 0) {
+    <button
+      (click)="buyNow(product)"
+      [disabled]="purchasingProductId() === product.id">
+      @if (purchasingProductId() === product.id) {
+      Acquisto in corso...
+      } @else {
+      Compralo subito
+      }
+    </button>
+    }
   </li>
   }
 </ul>
