@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum ProductException implements ApplicationExceptionEnum {
     NOT_FOUND("product.not-found", "Product not found", 404),
-    ALREADY_EXISTS("product.already-exists", "Product already exists", 409);
+    ALREADY_EXISTS("product.already-exists", "Product already exists", 409),
+    NOT_AVAILABLE("product.not-available", "Product is no longer available", 409),
+    CANNOT_BUY_OWN_PRODUCT("product.cannot-buy-own", "You cannot buy your own product", 400);
 
     private final String code;
     private final String message;
