@@ -1,0 +1,31 @@
+<app-category-bar />
+
+<section class="auctions">
+  @if (loading()) {
+    <p class="status">Caricamento aste...</p>
+  } @else if (error()) {
+    <p class="status error">{{ error() }}</p>
+  } @else {
+    <h2 class="section-title">Aste attive</h2>
+    @if (activeAuctions().length === 0) {
+      <p class="status">Nessuna asta attiva al momento.</p>
+    } @else {
+      <div class="auction-grid">
+        @for (auction of activeAuctions(); track auction.id) {
+          <app-auction-card [auction]="auction" />
+        }
+      </div>
+    }
+
+    <h2 class="section-title">Aste concluse</h2>
+    @if (inactiveAuctions().length === 0) {
+      <p class="status">Nessuna asta conclusa.</p>
+    } @else {
+      <div class="auction-grid">
+        @for (auction of inactiveAuctions(); track auction.id) {
+          <app-auction-card [auction]="auction" />
+        }
+      </div>
+    }
+  }
+</section>

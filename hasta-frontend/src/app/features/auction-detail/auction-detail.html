@@ -1,0 +1,20 @@
+@if (loading()) {
+  <p class="status">Caricamento asta...</p>
+} @else if (error()) {
+  <p class="status error">{{ error() }}</p>
+} @else if (auction(); as a) {
+  <article class="auction-detail">
+    <h1>{{ a.product.name }}</h1>
+    <p class="description">{{ a.product.description }}</p>
+    <dl>
+      <dt>Categoria</dt>
+      <dd>{{ a.product.category }}</dd>
+      <dt>Prezzo attuale</dt>
+      <dd>{{ a.currentPrice }} &euro;</dd>
+      <dt>Prezzo di partenza</dt>
+      <dd>{{ a.startingPrice }} &euro;</dd>
+      <dt>Stato</dt>
+      <dd>{{ isActive(a) ? 'In corso' : 'Conclusa' }}</dd>
+    </dl>
+  </article>
+}

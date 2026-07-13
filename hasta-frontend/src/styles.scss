@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+
+:root {
+  --ink: #1c1a17;
+  --paper: #f6f2ea;
+  --paper-raised: #ffffff;
+  --brass: #a3742c;
+  --brass-dim: #c9a869;
+  --line: #ddd3bf;
+  --muted: #6f6658;
+  --stamp: #8a5a46;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+a {
+  color: inherit;
+}

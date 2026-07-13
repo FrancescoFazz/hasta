@@ -1,0 +1,39 @@
+.auction-detail {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.auction-detail h1 {
+  font-family: var(--font-display);
+}
+
+.description {
+  color: var(--muted);
+}
+
+dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.4rem 1rem;
+  margin-top: 1.5rem;
+}
+
+dt {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+dd {
+  margin: 0;
+  font-family: var(--font-mono);
+}
+
+.status {
+  color: var(--muted);
+  padding: 2rem 1.5rem;
+}
+
+.status.error {
+  color: var(--stamp);
+}
