@@ -1,0 +1,16 @@
+@if (active()) {
+  <a class="auction-card" [routerLink]="['/aste', auction().id]">
+    <ng-container *ngTemplateOutlet="content" />
+  </a>
+} @else {
+  <div class="auction-card inactive" aria-disabled="true">
+    <ng-container *ngTemplateOutlet="content" />
+  </div>
+}
+
+<ng-template #content>
+  <h3 class="auction-title">{{ auction().product.name }}</h3>
+  <span class="auction-category">{{ auction().product.category }}</span>
+  <span class="auction-price">{{ auction().currentPrice }} &euro;</span>
+  <span class="auction-status">{{ active() ? 'In corso' : 'Conclusa' }}</span>
+</ng-template>

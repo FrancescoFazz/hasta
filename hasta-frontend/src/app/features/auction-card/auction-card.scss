@@ -1,0 +1,51 @@
+.auction-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  text-decoration: none;
+  color: var(--ink);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.auction-card:hover {
+  border-color: var(--brass);
+  box-shadow: 0 2px 10px rgba(28, 26, 23, 0.08);
+}
+
+.auction-card.inactive {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.auction-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.auction-category {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+
+.auction-price {
+  font-family: var(--font-mono);
+  font-weight: 500;
+}
+
+.auction-status {
+  font-size: 0.68rem;
+  color: var(--brass);
+}
+
+.auction-card.inactive .auction-status {
+  color: var(--stamp);
+}

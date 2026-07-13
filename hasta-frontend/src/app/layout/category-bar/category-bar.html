@@ -1,0 +1,12 @@
+<nav class="category-bar" aria-label="Categorie">
+  @for (category of categories; track category.id) {
+    <a
+      class="category-item"
+      [routerLink]="['/categoria', category.id]"
+      [title]="category.label"
+    >
+      <app-category-icon [icon]="category.icon" />
+      <span class="category-label">{{ category.label }}</span>
+    </a>
+  }
+</nav>

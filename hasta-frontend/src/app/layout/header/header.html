@@ -1,0 +1,12 @@
+<header class="site-header">
+  <a class="site-name" routerLink="/">Hasta</a>
+
+  <a class="profile" routerLink="/utente">
+    @if (user(); as u) {
+      <span class="avatar">{{ u.name.charAt(0) }}{{ u.surname.charAt(0) }}</span>
+      <span class="username">{{ u.username }}</span>
+    } @else {
+      <span class="avatar">?</span>
+    }
+  </a>
+</header>

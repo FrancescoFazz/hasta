@@ -1,0 +1,14 @@
+@if (loading()) {
+  <p class="status">Caricamento...</p>
+} @else {
+  <h1 class="category-title">{{ category() }}</h1>
+  @if (filtered().length === 0) {
+    <p class="status">Nessuna asta in questa categoria.</p>
+  } @else {
+    <div class="auction-grid">
+      @for (auction of filtered(); track auction.id) {
+        <app-auction-card [auction]="auction" />
+      }
+    </div>
+  }
+}
