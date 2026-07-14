@@ -1,5 +1,6 @@
 package com.hasta.backend.product.service;
 
+import com.hasta.backend.auction.repository.AuctionRepository;
 import com.hasta.backend.exception.ApplicationException;
 import com.hasta.backend.exception.enums.ProductException;
 import com.hasta.backend.exception.enums.UserException;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import com.hasta.backend.user.model.User;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,9 +28,10 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final UserRepository userRepository;
     private final PurchaseRepository purchaseRepository;
+    private final AuctionRepository auctionRepository;
 
     @Transactional
-    public Product addProduct(CreateProductRequest request){
+    public Product createProduct(CreateProductRequest request){
 
         User seller = userRepository.findById(request.getSellerId())
                 .orElseThrow(() -> new ApplicationException(UserException.NOT_FOUND));
@@ -134,6 +137,18 @@ public class ProductService {
 
         product.setQuantity(0);
         productRepository.save(product);
+
+        auctionRepository.findFirstByProduct_IdAndSoldFalseAndEndTimeAfter(productId, Instant.now())
+                .ifPresent(auction -> {
+                    if (auction.getWinner() != null) {
+                        User currentBidder = userRepository.findByIdForUpdate(auction.getWinner().getId())
+                                .orElseThrow(() -> new ApplicationException(UserException.NOT_FOUND));
+                        currentBidder.setBalance(currentBidder.getBalance().add(auction.getCurrentPrice()));
+                        userRepository.save(currentBidder);
+                    }
+                    auction.setSold(true);
+                    auctionRepository.save(auction);
+                });
 
         Purchase purchase = new Purchase();
         purchase.setProduct(product);

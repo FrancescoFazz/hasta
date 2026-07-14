@@ -52,6 +52,12 @@ export class AuctionDetail implements OnInit {
     return a ? Number(a.currentPrice) + 1 : 0;
   });
 
+  readonly isSeller = computed(() => {
+    const a = this.auction();
+    const user = this.currentUser();
+    return !!a && !!user && a.seller.id === user.id;
+  });
+
   constructor() {
     const tickId = setInterval(() => this.now.set(Date.now()), 30_000);
     inject(DestroyRef).onDestroy(() => clearInterval(tickId));

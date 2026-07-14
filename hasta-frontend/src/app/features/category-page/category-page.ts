@@ -2,7 +2,7 @@ import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angula
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { AuctionService } from '../../core/services/auction.service';
-import { Auction, isAuctionActive } from '../../core/models/auction.model';
+import { Auction } from '../../core/models/auction.model';
 import { Category } from '../../core/models/category.model';
 import { CategoryService } from '../../core/services/category.service';
 import { AuctionCard } from '../auction-card/auction-card';
@@ -20,9 +20,9 @@ export class CategoryPage implements OnInit {
   private route = inject(ActivatedRoute);
   private auctionService = inject(AuctionService);
   private categoryService = inject(CategoryService);
+  private destroyRef = inject(DestroyRef);
 
   private readonly allAuctions = signal<Auction[]>([]);
-  private readonly now = signal(Date.now());
   readonly category = signal<Category | null>(null);
   readonly loading = signal(true);
 
@@ -31,24 +31,16 @@ export class CategoryPage implements OnInit {
     return cat ? this.categoryService.getInfo(cat) : undefined;
   });
 
-  private readonly byCategory = computed(() => {
+  // Nessuno split attive/concluse qui apposta: la pagina categoria mostra tutta la storia
+  // dei lotti in un'unica lista, ordinata dal più recente (endTime) al più vecchio, così si
+  // vede tutto quello che è successo senza dover separare cosa è ancora attivo da cosa no.
+  readonly auctions = computed(() => {
     const cat = this.category();
-    return cat ? this.allAuctions().filter((a) => a.product.category === cat) : [];
+    if (!cat) return [];
+    return this.allAuctions()
+      .filter((a) => a.product.category === cat)
+      .sort((a, b) => new Date(b.endTime).getTime() - new Date(a.endTime).getTime());
   });
-
-  readonly activeAuctions = computed(() =>
-    this.byCategory().filter((a) => isAuctionActive(a, this.now())),
-  );
-  readonly inactiveAuctions = computed(() =>
-    this.byCategory().filter((a) => !isAuctionActive(a, this.now())),
-  );
-
-  private destroyRef = inject(DestroyRef);
-
-  constructor() {
-    const tickId = setInterval(() => this.now.set(Date.now()), 30_000);
-    inject(DestroyRef).onDestroy(() => clearInterval(tickId));
-  }
 
   ngOnInit(): void {
     this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {

@@ -50,39 +50,43 @@
 
       @if (isActive(a)) {
         @if (isLoggedIn()) {
-          <div class="actions">
-            <form class="bid-form" (ngSubmit)="submitBid()">
-              <label class="field">
-                <span>La tua offerta (min {{ minBid() }} &euro;)</span>
-                <input
-                  type="number"
-                  name="bidAmount"
-                  [(ngModel)]="bidAmount"
-                  [min]="minBid()"
-                  step="0.01"
-                  required
-                />
-              </label>
-              @if (bidError()) {
-                <p class="error">{{ bidError() }}</p>
-              }
-              <button type="submit" class="btn btn-primary" [disabled]="bidSubmitting()">
-                {{ bidSubmitting() ? 'Invio...' : 'Fai un\'offerta' }}
-              </button>
-            </form>
+          @if (isSeller()) {
+            <p class="seller-notice">Questa è la tua asta: non puoi fare offerte o acquistarla.</p>
+          } @else {
+            <div class="actions">
+              <form class="bid-form" (ngSubmit)="submitBid()">
+                <label class="field">
+                  <span>La tua offerta (min {{ minBid() }} &euro;)</span>
+                  <input
+                    type="number"
+                    name="bidAmount"
+                    [(ngModel)]="bidAmount"
+                    [min]="minBid()"
+                    step="0.01"
+                    required
+                  />
+                </label>
+                @if (bidError()) {
+                  <p class="error">{{ bidError() }}</p>
+                }
+                <button type="submit" class="btn btn-primary" [disabled]="bidSubmitting()">
+                  {{ bidSubmitting() ? 'Invio...' : 'Fai un\'offerta' }}
+                </button>
+              </form>
 
-            <div class="buy-now">
-              @if (buyError()) {
-                <p class="error">{{ buyError() }}</p>
-              }
-              @if (buySuccess()) {
-                <p class="success">Acquisto completato!</p>
-              }
-              <button type="button" class="btn btn-secondary" (click)="buyNow()" [disabled]="buySubmitting()">
-                {{ buySubmitting() ? 'Elaborazione...' : 'Acquista subito' }}
-              </button>
+              <div class="buy-now">
+                @if (buyError()) {
+                  <p class="error">{{ buyError() }}</p>
+                }
+                @if (buySuccess()) {
+                  <p class="success">Acquisto completato!</p>
+                }
+                <button type="button" class="btn btn-secondary" (click)="buyNow()" [disabled]="buySubmitting()">
+                  {{ buySubmitting() ? 'Elaborazione...' : 'Acquista subito' }}
+                </button>
+              </div>
             </div>
-          </div>
+          }
         } @else {
           <p class="login-prompt">
             <a routerLink="/login">Accedi</a> per fare un'offerta o acquistare subito.
