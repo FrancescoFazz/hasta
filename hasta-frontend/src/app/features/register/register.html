@@ -1,0 +1,74 @@
+<section class="auth-form">
+  <h1>Crea un account</h1>
+
+  <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+    <label>
+      Username
+      <input type="text" name="username" [(ngModel)]="form.username" required />
+    </label>
+
+    <label>
+      Email
+      <input type="email" name="email" [(ngModel)]="form.email" required />
+    </label>
+
+    <div class="row">
+      <label>
+        Nome
+        <input type="text" name="name" [(ngModel)]="form.name" required />
+      </label>
+
+      <label>
+        Cognome
+        <input type="text" name="surname" [(ngModel)]="form.surname" required />
+      </label>
+    </div>
+
+    <label>
+      Genere
+      <select name="gender" [(ngModel)]="form.gender" required>
+        <option value="MALE">Uomo</option>
+        <option value="FEMALE">Donna</option>
+      </select>
+    </label>
+
+    <label>
+      Password
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="form.password"
+        autocomplete="new-password"
+        required
+        minlength="6"
+      />
+    </label>
+
+    <label>
+      Conferma password
+      <input
+        type="password"
+        name="confirmPassword"
+        [(ngModel)]="confirmPassword"
+        autocomplete="new-password"
+        required
+      />
+    </label>
+
+    @if (errorMessage(); as error) {
+    <p class="error">{{ error }}</p>
+    }
+
+    <button type="submit" [disabled]="loading()">
+      @if (loading()) {
+      Creazione account...
+      } @else {
+      Registrati
+      }
+    </button>
+  </form>
+
+  <p class="switch">
+    Hai già un account? <a routerLink="/login">Accedi</a>
+  </p>
+</section>

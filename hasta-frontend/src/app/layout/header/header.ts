@@ -40,6 +40,7 @@ export class Header implements OnInit {
 
   logout(): void {
     this.closeMenu();
+    this.userService.clearCurrentUser();
     this.authService.logout();
     this.router.navigateByUrl('/login');
   }
