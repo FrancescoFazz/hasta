@@ -1,0 +1,43 @@
+<section class="auth-form">
+  <h1>Accedi</h1>
+
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <label>
+      Username
+      <input
+        type="text"
+        name="username"
+        [(ngModel)]="username"
+        autocomplete="username"
+        required
+      />
+    </label>
+
+    <label>
+      Password
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        autocomplete="current-password"
+        required
+      />
+    </label>
+
+    @if (errorMessage(); as error) {
+    <p class="error">{{ error }}</p>
+    }
+
+    <button type="submit" [disabled]="loading()">
+      @if (loading()) {
+      Accesso in corso...
+      } @else {
+      Accedi
+      }
+    </button>
+  </form>
+
+  <p class="switch">
+    Non hai un account? <a routerLink="/registrati">Registrati</a>
+  </p>
+</section>

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { User } from '../models/user.model';
+import { CreateUserRequest } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -20,5 +21,13 @@ export class UserService {
 
   getById(id: number): Observable<User> {
     return this.http.get<User>(`${this.baseUrl}/${id}`);
+  }
+
+  clearCurrentUser(): void {
+    this.currentUser.set(null);
+  }
+
+  register(request: CreateUserRequest): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/register`, request);
   }
 }

@@ -54,6 +54,8 @@ public class UserService {
         Response response = keycloak.realm(realm).users().create(kcUser);
 
         if (response.getStatus() != 201) {
+            System.out.println("KEYCLOAK ERROR - status: " + response.getStatus()
+                    + " body: " + response.readEntity(String.class));
             throw new ApplicationException(UserException.KEYCLOAK_ERROR);
         }
 
