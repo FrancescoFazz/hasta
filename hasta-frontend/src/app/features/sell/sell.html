@@ -1,0 +1,58 @@
+<section class="sell-page">
+  <form class="sell-card" (ngSubmit)="submit()">
+    <h1>Pubblica un'asta</h1>
+    <p class="subtitle">Metti in vendita un oggetto: verrà creato subito come nuovo lotto attivo.</p>
+
+    <label class="field">
+      <span>Nome dell'oggetto</span>
+      <input type="text" name="name" [(ngModel)]="name" required />
+    </label>
+
+    <label class="field">
+      <span>Descrizione</span>
+      <textarea name="description" [(ngModel)]="description" rows="3" required></textarea>
+    </label>
+
+    <div class="field-row">
+      <label class="field">
+        <span>Categoria</span>
+        <select name="category" [(ngModel)]="category" required>
+          <option [ngValue]="null" disabled>Seleziona una categoria</option>
+          @for (c of categories; track c.id) {
+            <option [ngValue]="c.id">{{ c.label }}</option>
+          }
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Quantità</span>
+        <input type="number" name="quantity" [(ngModel)]="quantity" min="1" required />
+      </label>
+    </div>
+
+    <div class="field-row">
+      <label class="field">
+        <span>Prezzo di partenza (&euro;)</span>
+        <input type="number" name="startingPrice" [(ngModel)]="startingPrice" min="0" step="0.01" required />
+      </label>
+
+      <label class="field">
+        <span>Prezzo acquisto diretto (&euro;)</span>
+        <input type="number" name="price" [(ngModel)]="price" min="0" step="0.01" required />
+      </label>
+    </div>
+
+    <label class="field">
+      <span>Durata dell'asta (giorni)</span>
+      <input type="number" name="durationDays" [(ngModel)]="durationDays" min="1" max="30" required />
+    </label>
+
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
+
+    <button type="submit" class="btn btn-primary" [disabled]="submitting() || !canSubmit()">
+      {{ submitting() ? 'Pubblicazione...' : 'Pubblica asta' }}
+    </button>
+  </form>
+</section>

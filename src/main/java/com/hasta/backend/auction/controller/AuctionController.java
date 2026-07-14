@@ -23,7 +23,7 @@ public class AuctionController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Auction createAuction(@RequestBody @Valid CreateAuctionRequest request){
-        return auctionService.addAuction(request);
+        return auctionService.createAuction(request);
     }
 
     @GetMapping

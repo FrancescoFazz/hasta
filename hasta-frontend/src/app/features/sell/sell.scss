@@ -1,0 +1,94 @@
+.sell-page {
+  display: flex;
+  justify-content: center;
+  padding: 2.5rem 1.5rem 3rem;
+}
+
+.sell-card {
+  width: 100%;
+  max-width: 32rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 2rem 1.9rem;
+  box-shadow: 0 1px 3px rgba(28, 26, 23, 0.04);
+}
+
+.sell-card h1 {
+  font-family: var(--font-display);
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.subtitle {
+  margin: -0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.field input,
+.field select,
+.field textarea {
+  font: inherit;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 0.4rem;
+  background: var(--paper);
+  color: var(--ink);
+  resize: vertical;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--brass);
+}
+
+.error {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--stamp);
+}
+
+.btn {
+  font: inherit;
+  padding: 0.65rem 1.1rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--brass);
+  color: var(--paper-raised);
+}
+
+.btn-primary:hover {
+  background: var(--brass-dim);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

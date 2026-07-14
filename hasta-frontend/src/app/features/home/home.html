@@ -69,10 +69,17 @@
       </div>
     } @else {
       <div class="auction-grid">
-        @for (auction of activeAuctions(); track auction.id) {
+        @for (auction of visibleActive(); track auction.id) {
           <app-auction-card [auction]="auction" />
         }
       </div>
+      @if (activeAuctions().length > visibleActive().length) {
+        <div class="show-all">
+          <button class="show-all-btn" type="button" (click)="showAllActiveAuctions()">
+            Vedi tutte ({{ activeAuctions().length }})
+          </button>
+        </div>
+      }
     }
 
     <div class="section-head">
@@ -87,10 +94,17 @@
       </div>
     } @else {
       <div class="auction-grid">
-        @for (auction of inactiveAuctions(); track auction.id) {
+        @for (auction of visibleInactive(); track auction.id) {
           <app-auction-card [auction]="auction" />
         }
       </div>
+      @if (inactiveAuctions().length > visibleInactive().length) {
+        <div class="show-all">
+          <button class="show-all-btn" type="button" (click)="showAllInactiveAuctions()">
+            Vedi tutte ({{ inactiveAuctions().length }})
+          </button>
+        </div>
+      }
     }
   }
 </section>

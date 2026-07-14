@@ -139,6 +139,30 @@
   gap: 1.1rem;
 }
 
+.show-all {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.1rem;
+}
+
+.show-all-btn {
+  padding: 0.5rem 1.3rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--brass);
+  background: none;
+  color: var(--brass);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.show-all-btn:hover {
+  background: var(--brass);
+  color: var(--paper-raised);
+}
+
 .state-block {
   display: flex;
   flex-direction: column;

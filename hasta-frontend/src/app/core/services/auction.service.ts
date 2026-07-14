@@ -4,6 +4,14 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Auction } from '../models/auction.model';
 
+export interface CreateAuctionRequest {
+  startingPrice: number;
+  quantitySold: number;
+  sellerId: number;
+  productId: number;
+  endTime: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuctionService {
   private http = inject(HttpClient);
@@ -15,6 +23,10 @@ export class AuctionService {
 
   getById(id: number): Observable<Auction> {
     return this.http.get<Auction>(`${this.baseUrl}/${id}`);
+  }
+
+  createAuction(request: CreateAuctionRequest): Observable<Auction> {
+    return this.http.post<Auction>(this.baseUrl, request);
   }
 
   placeBid(auctionId: number, userId: number, amount: number): Observable<void> {

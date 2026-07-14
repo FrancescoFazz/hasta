@@ -32,7 +32,7 @@ public class AuctionService {
     private final BidRepository bidRepository;
 
     @Transactional
-    public Auction addAuction(CreateAuctionRequest request) {
+    public Auction createAuction(CreateAuctionRequest request) {
         User seller = userRepository.getReferenceById(request.getSellerId());
         Product product = productRepository.getReferenceById(request.getProductId());
 

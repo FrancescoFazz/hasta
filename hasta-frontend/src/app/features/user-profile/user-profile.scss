@@ -69,3 +69,66 @@
   padding: 2rem 1.5rem;
   color: var(--muted);
 }
+
+.credit-box {
+  margin-top: 1.4rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  text-align: left;
+}
+
+.credit-label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+
+.credit-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.credit-btn {
+  flex: 1;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.5rem 0.4rem;
+  border: 1px solid var(--brass-dim);
+  border-radius: 0.4rem;
+  background: none;
+  color: var(--brass);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.credit-btn:hover:not(:disabled) {
+  background: var(--brass);
+  color: var(--paper-raised);
+}
+
+.credit-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.error {
+  margin: 0.5rem 0 0;
+  font-size: 0.82rem;
+  color: var(--stamp);
+}
+
+.sell-link {
+  display: block;
+  margin-top: 1.4rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  font-weight: 600;
+  color: var(--brass);
+  text-decoration: none;
+}
+
+.sell-link:hover {
+  color: var(--brass-dim);
+}

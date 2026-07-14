@@ -72,7 +72,7 @@ class AuctionIntegrationTest {
         productRequest.setCategory(Categories.ELETTRONICA);
         productRequest.setSellerId(sellerId);
 
-        Product createdProduct = productService.addProduct(productRequest);
+        Product createdProduct = productService.createProduct(productRequest);
         assertNotNull(createdProduct.getId());
         System.out.println("--- Prodotto creato con successo! ID: " + createdProduct.getId());
 
@@ -84,7 +84,7 @@ class AuctionIntegrationTest {
         auctionRequest.setStartingPrice(new BigDecimal("100.00"));
         auctionRequest.setEndTime(Instant.now().plus(1, ChronoUnit.HOURS));
 
-        Auction createdAuction = auctionService.addAuction(auctionRequest);
+        Auction createdAuction = auctionService.createAuction(auctionRequest);
         assertNotNull(createdAuction.getId());
         assertEquals(new BigDecimal("100.00"), createdAuction.getCurrentPrice());
         assertFalse(createdAuction.isSold());
@@ -129,7 +129,7 @@ class AuctionIntegrationTest {
         invalidRequest.setEndTime(Instant.now().minus(5, ChronoUnit.MINUTES));
 
         ApplicationException exception = assertThrows(ApplicationException.class, () -> {
-            auctionService.addAuction(invalidRequest);
+            auctionService.createAuction(invalidRequest);
         });
 
         assertEquals("auction.past-end-time", exception.getCode());

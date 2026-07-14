@@ -7,6 +7,7 @@ import { Settings } from './features/settings/settings';
 import { Login } from './features/login/login';
 import { authGuard } from './core/guards/auth.guard';
 import { Register } from './features/register/register';
+import { Sell } from './features/sell/sell';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -14,6 +15,7 @@ export const routes: Routes = [
   { path: 'categoria/:id', component: CategoryPage },
   { path: 'utente', component: UserProfile, canActivate: [authGuard] },
   { path: 'impostazioni', component: Settings, canActivate: [authGuard] },
+  { path: 'vendi', component: Sell, canActivate: [authGuard] },
   { path: 'login', component: Login },
   { path: 'registrati', component: Register },
   { path: '**', redirectTo: '' },

@@ -30,4 +30,8 @@ export class UserService {
   register(request: CreateUserRequest): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}/register`, request);
   }
+
+  addCredit(userId: number, amount: number): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/${userId}/charge?amount=${amount}`, {});
+  }
 }

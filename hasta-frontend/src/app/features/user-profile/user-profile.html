@@ -9,8 +9,29 @@
         <dt>Email</dt>
         <dd>{{ u.email }}</dd>
         <dt>Credito</dt>
-        <dd class="balance">{{ u.balance }} &euro;</dd>
+        <dd class="balance">{{ formattedBalance(u.balance) }}</dd>
       </dl>
+
+      <div class="credit-box">
+        <span class="credit-label">Aggiungi credito (fittizio)</span>
+        <div class="credit-buttons">
+          @for (amount of topUpAmounts; track amount) {
+            <button
+              type="button"
+              class="credit-btn"
+              (click)="addCredit(amount)"
+              [disabled]="chargingAmount() !== null"
+            >
+              {{ chargingAmount() === amount ? '...' : '+' + amount + ' €' }}
+            </button>
+          }
+        </div>
+        @if (chargeError()) {
+          <p class="error">{{ chargeError() }}</p>
+        }
+      </div>
+
+      <a routerLink="/vendi" class="sell-link">Pubblica un'asta</a>
     </div>
   </section>
 } @else {
