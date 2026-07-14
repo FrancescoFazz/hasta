@@ -1,40 +1,83 @@
 .category-bar {
   display: flex;
-  gap: 1.75rem;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2.1rem;
   overflow-x: auto;
-  padding: 0.85rem 1.5rem;
+  padding: 0.9rem 1.5rem 2.75rem;
   background: var(--paper-raised);
   border-bottom: 1px solid var(--line);
   scrollbar-width: thin;
 }
 
 .category-item {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   flex: 0 0 auto;
   color: var(--muted);
   text-decoration: none;
-  padding: 0.15rem 0.1rem;
+  padding: 0.2rem 0.1rem;
+}
+
+.category-item app-category-icon {
+  display: inline-flex;
+  transition: transform 0.15s ease;
 }
 
 .category-item:hover,
-.category-item:focus-visible {
+.category-item:focus-visible,
+.category-item.active {
   color: var(--brass);
 }
 
-.category-label {
-  font-size: 0.68rem;
-  margin-top: 0.3rem;
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  transition: max-height 0.15s ease, opacity 0.15s ease;
+.category-item:hover app-category-icon,
+.category-item:focus-visible app-category-icon {
+  transform: translateY(-2px);
 }
 
-.category-item:hover .category-label,
-.category-item:focus-visible .category-label {
-  max-height: 1.2rem;
+.category-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -0.55rem;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: var(--brass);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+.category-tooltip {
+  position: absolute;
+  top: calc(100% + 0.55rem);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.35rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 5;
+}
+
+.category-tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-bottom-color: var(--ink);
+}
+
+.category-item:hover .category-tooltip,
+.category-item:focus-visible .category-tooltip {
   opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }

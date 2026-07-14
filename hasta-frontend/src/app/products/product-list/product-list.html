@@ -8,37 +8,37 @@
 </div>
 
 @if (purchaseSuccessMessage()) {
-<p class="success">{{ purchaseSuccessMessage() }}</p>
+  <p class="success">{{ purchaseSuccessMessage() }}</p>
 }
 @if (purchaseError()) {
-<p class="error">{{ purchaseError() }}</p>
+  <p class="error">{{ purchaseError() }}</p>
 }
 
 @if (loading()) {
-<p>Caricamento in corso...</p>
+  <p>Caricamento in corso...</p>
 } @else if (error()) {
-<p class="error">{{ error() }}</p>
+  <p class="error">{{ error() }}</p>
 } @else if (products().length === 0) {
-<p>Nessun prodotto disponibile.</p>
+  <p>Nessun prodotto disponibile.</p>
 } @else {
-<ul>
-  @for (product of products(); track product.id) {
-  <li>
-    <strong>{{ product.name }}</strong> — {{ product.category }} — {{ product.price }}€
-    <span class="quantity">{{ product.quantity > 0 ? 'Disponibile' : 'Esaurito' }}</span>
+  <ul>
+    @for (product of products(); track product.id) {
+      <li>
+        <strong>{{ product.name }}</strong> — {{ categoryLabel(product.category) }} — {{ product.price }}€
+        <span class="quantity">{{ product.quantity > 0 ? 'Disponibile' : 'Esaurito' }}</span>
 
-    @if (product.quantity > 0) {
-    <button
-      (click)="buyNow(product)"
-      [disabled]="purchasingProductId() === product.id">
-      @if (purchasingProductId() === product.id) {
-      Acquisto in corso...
-      } @else {
-      Compralo subito
-      }
-    </button>
+        @if (product.quantity > 0) {
+          <button
+            (click)="buyNow(product)"
+            [disabled]="purchasingProductId() === product.id">
+            @if (purchasingProductId() === product.id) {
+              Acquisto in corso...
+            } @else {
+              Compralo subito
+            }
+          </button>
+        }
+      </li>
     }
-  </li>
-  }
-</ul>
+  </ul>
 }

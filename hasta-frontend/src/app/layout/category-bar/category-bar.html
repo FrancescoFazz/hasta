@@ -3,10 +3,11 @@
     <a
       class="category-item"
       [routerLink]="['/categoria', category.id]"
+      routerLinkActive="active"
       [title]="category.label"
     >
       <app-category-icon [icon]="category.icon" />
-      <span class="category-label">{{ category.label }}</span>
+      <span class="category-tooltip">{{ category.label }}</span>
     </a>
   }
 </nav>

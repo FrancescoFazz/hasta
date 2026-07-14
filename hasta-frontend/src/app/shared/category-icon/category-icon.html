@@ -7,6 +7,8 @@
   stroke-linecap="round"
   stroke-linejoin="round"
   aria-hidden="true"
+  [style.width.px]="size()"
+  [style.height.px]="size()"
 >
   @switch (icon()) {
     @case ('cpu') {

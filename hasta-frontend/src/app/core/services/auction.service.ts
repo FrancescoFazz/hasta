@@ -16,4 +16,8 @@ export class AuctionService {
   getById(id: number): Observable<Auction> {
     return this.http.get<Auction>(`${this.baseUrl}/${id}`);
   }
+
+  placeBid(auctionId: number, userId: number, amount: number): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${auctionId}/bids`, { userId, amount });
+  }
 }

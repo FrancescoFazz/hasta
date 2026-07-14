@@ -1,25 +1,221 @@
+.hero {
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
+  background: radial-gradient(ellipse at 50% 0%, rgba(163, 116, 44, 0.08), transparent 60%);
+}
+
+.hero-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin: 0 0 0.75rem;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0;
+  color: var(--ink);
+}
+
+.hero-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+.hero-ornament svg {
+  color: var(--brass);
+  flex-shrink: 0;
+}
+
+.ornament-line {
+  width: 3rem;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--brass-dim));
+}
+
+.hero-ornament .ornament-line:last-child {
+  background: linear-gradient(to left, transparent, var(--brass-dim));
+}
+
+.stats-strip {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.stat-value.accent {
+  color: var(--brass);
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
 .auctions {
-  padding: 1.25rem 1.5rem 2.5rem;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 1.4rem 1.5rem 3rem;
+}
+
+.section-head {
+  margin: 1.9rem 0 1rem;
 }
 
 .section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-family: var(--font-display);
   font-size: 1.15rem;
   font-weight: 600;
-  margin: 1.75rem 0 0.9rem;
+  margin: 0;
+}
+
+.section-title.muted-dot {
+  color: var(--muted);
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+}
+
+.pulse-dot,
+.static-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.pulse-dot {
+  background: var(--brass);
+  animation: pulse 1.8s infinite;
+}
+
+.static-dot {
+  background: var(--line);
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(163, 116, 44, 0.45); }
+  70% { box-shadow: 0 0 0 6px rgba(163, 116, 44, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(163, 116, 44, 0); }
 }
 
 .auction-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1rem;
+  gap: 1.1rem;
 }
 
-.status {
+.state-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 2.5rem 1rem;
   color: var(--muted);
-  font-size: 0.9rem;
+  text-align: center;
 }
 
-.status.error {
+.state-block svg {
+  width: 32px;
+  height: 32px;
+  opacity: 0.6;
+}
+
+.state-block.error {
   color: var(--stamp);
+}
+
+.retry-btn {
+  margin-top: 0.4rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 0.4rem;
+  border: 1px solid var(--stamp);
+  background: none;
+  color: var(--stamp);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.retry-btn:hover {
+  background: var(--stamp);
+  color: var(--paper-raised);
+}
+
+.skeleton-card {
+  border-radius: 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  overflow: hidden;
+  padding-bottom: 1rem;
+}
+
+.skeleton-art {
+  aspect-ratio: 4 / 3;
+  background: var(--line);
+}
+
+.skeleton-line {
+  height: 0.65rem;
+  margin: 0.7rem 1rem 0;
+  border-radius: 0.2rem;
+  background: var(--line);
+}
+
+.skeleton-line.w-70 { width: 70%; }
+.skeleton-line.w-40 { width: 40%; margin-top: 0.5rem; }
+
+.skeleton-art,
+.skeleton-line {
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-art::after,
+.skeleton-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
 }
