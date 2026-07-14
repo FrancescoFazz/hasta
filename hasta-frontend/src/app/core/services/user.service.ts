@@ -10,13 +10,11 @@ export class UserService {
   private baseUrl = `${environment.apiUrl}/users`;
 
 
-  private readonly currentUserId = 1;
-
   readonly currentUser = signal<User | null>(null);
 
   loadCurrentUser(): Observable<User> {
     return this.http
-      .get<User>(`${this.baseUrl}/${this.currentUserId}`)
+      .get<User>(`${this.baseUrl}/me`)
       .pipe(tap((user) => this.currentUser.set(user)));
   }
 

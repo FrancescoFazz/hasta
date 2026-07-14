@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
+import { formatCurrency } from '../../core/utils/format.util';
 
 @Component({
   selector: 'app-user-profile',
@@ -23,5 +24,9 @@ export class UserProfile implements OnInit {
         this.loading.set(false);
         }
       });
+  }
+
+  formattedBalance(balance: number): string {
+    return formatCurrency(balance);
   }
 }

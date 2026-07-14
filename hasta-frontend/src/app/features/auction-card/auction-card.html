@@ -9,8 +9,21 @@
 }
 
 <ng-template #content>
-  <h3 class="auction-title">{{ auction().product.name }}</h3>
-  <span class="auction-category">{{ auction().product.category }}</span>
-  <span class="auction-price">{{ auction().currentPrice }} &euro;</span>
-  <span class="auction-status">{{ active() ? 'In corso' : 'Conclusa' }}</span>
+  <span class="status-pill" [class.status-live]="active()" [class.status-closed]="!active()">
+    @if (active()) {
+      <span class="pulse-dot"></span>{{ remaining() }}
+    } @else {
+      Conclusa
+    }
+  </span>
+
+  <div class="lot-art">
+    <app-category-icon [icon]="categoryInfo()?.icon ?? 'box'" [size]="56" />
+  </div>
+
+  <div class="lot-body">
+    <span class="lot-category">{{ categoryInfo()?.label ?? auction().product.category }}</span>
+    <h3 class="lot-title">{{ auction().product.name }}</h3>
+    <span class="lot-price">{{ formattedPrice() }}</span>
+  </div>
 </ng-template>

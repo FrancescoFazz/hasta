@@ -3,18 +3,92 @@
 } @else if (error()) {
   <p class="status error">{{ error() }}</p>
 } @else if (auction(); as a) {
-  <article class="auction-detail">
-    <h1>{{ a.product.name }}</h1>
-    <p class="description">{{ a.product.description }}</p>
-    <dl>
-      <dt>Categoria</dt>
-      <dd>{{ a.product.category }}</dd>
-      <dt>Prezzo attuale</dt>
-      <dd>{{ a.currentPrice }} &euro;</dd>
-      <dt>Prezzo di partenza</dt>
-      <dd>{{ a.startingPrice }} &euro;</dd>
-      <dt>Stato</dt>
-      <dd>{{ isActive(a) ? 'In corso' : 'Conclusa' }}</dd>
-    </dl>
+  <article class="lot-sheet">
+    <div class="lot-sheet-art">
+      <span class="status-pill" [class.status-live]="isActive(a)" [class.status-closed]="!isActive(a)">
+        @if (isActive(a)) {
+          <span class="pulse-dot"></span>{{ remaining(a) }}
+        } @else {
+          Conclusa
+        }
+      </span>
+      @if (categoryInfo(); as info) {
+        <app-category-icon [icon]="info.icon" [size]="72" />
+      }
+    </div>
+
+    <div class="lot-sheet-body">
+      <span class="lot-category">{{ categoryInfo()?.label ?? a.product.category }}</span>
+      <h1>{{ a.product.name }}</h1>
+      <p class="description">{{ a.product.description }}</p>
+
+      <div class="price-box">
+        <span class="price-label">Prezzo attuale</span>
+        <span class="price-value">{{ formattedPrice(a) }}</span>
+      </div>
+
+      <dl class="spec-list">
+        <div class="spec-row">
+          <dt>Prezzo di partenza</dt>
+          <dd>{{ formattedStartingPrice(a) }}</dd>
+        </div>
+        <div class="spec-row">
+          <dt>Quantità</dt>
+          <dd>{{ a.product.quantity }}</dd>
+        </div>
+        <div class="spec-row">
+          <dt>Venditore</dt>
+          <dd>{{ a.seller.username }}</dd>
+        </div>
+        @if (a.winner) {
+          <div class="spec-row">
+            <dt>Aggiudicatario</dt>
+            <dd>{{ a.winner.username }}</dd>
+          </div>
+        }
+      </dl>
+
+      @if (isActive(a)) {
+        @if (isLoggedIn()) {
+          <div class="actions">
+            <form class="bid-form" (ngSubmit)="submitBid()">
+              <label class="field">
+                <span>La tua offerta (min {{ minBid() }} &euro;)</span>
+                <input
+                  type="number"
+                  name="bidAmount"
+                  [(ngModel)]="bidAmount"
+                  [min]="minBid()"
+                  step="0.01"
+                  required
+                />
+              </label>
+              @if (bidError()) {
+                <p class="error">{{ bidError() }}</p>
+              }
+              <button type="submit" class="btn btn-primary" [disabled]="bidSubmitting()">
+                {{ bidSubmitting() ? 'Invio...' : 'Fai un\'offerta' }}
+              </button>
+            </form>
+
+            <div class="buy-now">
+              @if (buyError()) {
+                <p class="error">{{ buyError() }}</p>
+              }
+              @if (buySuccess()) {
+                <p class="success">Acquisto completato!</p>
+              }
+              <button type="button" class="btn btn-secondary" (click)="buyNow()" [disabled]="buySubmitting()">
+                {{ buySubmitting() ? 'Elaborazione...' : 'Acquista subito' }}
+              </button>
+            </div>
+          </div>
+        } @else {
+          <p class="login-prompt">
+            <a routerLink="/login">Accedi</a> per fare un'offerta o acquistare subito.
+          </p>
+        }
+      }
+    </div>
   </article>
 }

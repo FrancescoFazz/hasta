@@ -44,6 +44,8 @@ public class UserService {
         UserRepresentation kcUser = new UserRepresentation();
         kcUser.setUsername(request.getUsername());
         kcUser.setEmail(request.getEmail());
+        kcUser.setFirstName(request.getName());
+        kcUser.setLastName(request.getSurname());
         kcUser.setEnabled(true);
         kcUser.setCredentials(List.of(credential));
         kcUser.setEmailVerified(true);

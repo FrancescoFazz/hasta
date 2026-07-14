@@ -1,9 +1,7 @@
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:8080/api',
-  keycloak: {
-    url: 'http://localhost:8180',
-    realm: 'hasta-realm',
-    clientId: 'hasta-client',
-  },
+  keycloakUrl: 'http://localhost:8180',
+  keycloakRealm: 'hasta-realm',
+  keycloakClientId: 'hasta-client'
 };

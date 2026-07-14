@@ -1,12 +1,32 @@
+<app-category-bar />
+
+<div class="category-header">
+  @if (categoryInfo(); as info) {
+    <span class="category-header-icon">
+      <app-category-icon [icon]="info.icon" [size]="28" />
+    </span>
+    <h1>{{ info.label }}</h1>
+  } @else {
+    <h1>{{ category() }}</h1>
+  }
+</div>
+
 @if (loading()) {
   <p class="status">Caricamento...</p>
+} @else if (activeAuctions().length === 0 && inactiveAuctions().length === 0) {
+  <p class="status">Nessuna asta in questa categoria.</p>
 } @else {
-  <h1 class="category-title">{{ category() }}</h1>
-  @if (filtered().length === 0) {
-    <p class="status">Nessuna asta in questa categoria.</p>
-  } @else {
+  @if (activeAuctions().length > 0) {
     <div class="auction-grid">
-      @for (auction of filtered(); track auction.id) {
+      @for (auction of activeAuctions(); track auction.id) {
+        <app-auction-card [auction]="auction" />
+      }
+    </div>
+  }
+  @if (inactiveAuctions().length > 0) {
+    <h2 class="section-title muted-dot">Concluse</h2>
+    <div class="auction-grid">
+      @for (auction of inactiveAuctions(); track auction.id) {
         <app-auction-card [auction]="auction" />
       }
     </div>
