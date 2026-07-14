@@ -29,7 +29,20 @@ export interface Auction {
   product: AuctionProductRef;
 }
 
+export function isAuctionActive(auction: Auction, now: number = Date.now()): boolean {
+  return !auction.sold && new Date(auction.endTime).getTime() > now;
+}
 
-export function isAuctionActive(auction: Auction): boolean {
-  return !auction.sold && new Date(auction.endTime).getTime() > Date.now();
+export function formatRemaining(endTime: string, now: number = Date.now()): string {
+  const diffMs = new Date(endTime).getTime() - now;
+  if (diffMs <= 0) return 'Conclusa';
+
+  const minutes = Math.floor(diffMs / 60_000);
+  const days = Math.floor(minutes / 1440);
+  const hours = Math.floor((minutes % 1440) / 60);
+  const mins = minutes % 60;
+
+  if (days > 0) return `${days}g ${hours}h`;
+  if (hours > 0) return `${hours}h ${mins}m`;
+  return `${mins}m`;
 }

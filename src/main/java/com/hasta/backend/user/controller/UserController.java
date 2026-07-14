@@ -6,6 +6,8 @@ import com.hasta.backend.user.model.User;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -25,6 +27,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public User createUser(@RequestBody @Valid CreateUserRequest request) {
         return userService.createUser(request);
+    }
+
+    @GetMapping("/me")
+    public User getCurrentUser(@AuthenticationPrincipal Jwt jwt) {
+        return userService.findByUsername(jwt.getClaimAsString("preferred_username"));
     }
 
     @GetMapping

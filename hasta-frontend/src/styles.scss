@@ -1,6 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
-
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap');
 
 :root {
   --ink: #1c1a17;
@@ -15,10 +13,16 @@
   --font-display: 'Fraunces', Georgia, serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'IBM Plex Mono', 'SFMono-Regular', monospace;
+
+  --content-max: 1180px;
 }
 
 * {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
@@ -28,11 +32,42 @@ body {
 }
 
 body {
-  background: var(--paper);
+  background-color: var(--paper);
+  background-image: radial-gradient(rgba(28, 26, 23, 0.035) 1px, transparent 1px);
+  background-size: 20px 20px;
   color: var(--ink);
   font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
 }
 
 a {
   color: inherit;
+}
+
+::selection {
+  background: var(--brass);
+  color: var(--paper-raised);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--brass-dim);
 }

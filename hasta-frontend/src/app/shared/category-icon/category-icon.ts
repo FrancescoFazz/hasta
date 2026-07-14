@@ -8,4 +8,5 @@ import { Component, input } from '@angular/core';
 })
 export class CategoryIcon {
   icon = input.required<string>();
+  size = input<number>(24);
 }

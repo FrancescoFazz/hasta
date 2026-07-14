@@ -1,14 +1,17 @@
 @if (user(); as u) {
-  <section class="profile">
-    <h1>{{ u.name }} {{ u.surname }}</h1>
-    <dl>
-      <dt>Username</dt>
-      <dd>{{ u.username }}</dd>
-      <dt>Email</dt>
-      <dd>{{ u.email }}</dd>
-      <dt>Credito</dt>
-      <dd>{{ u.balance }} &euro;</dd>
-    </dl>
+  <section class="profile-page">
+    <div class="profile-card">
+      <span class="profile-avatar">{{ u.name.charAt(0) }}{{ u.surname.charAt(0) }}</span>
+      <h1>{{ u.name }} {{ u.surname }}</h1>
+      <span class="profile-username">&#64;{{ u.username }}</span>
+
+      <dl>
+        <dt>Email</dt>
+        <dd>{{ u.email }}</dd>
+        <dt>Credito</dt>
+        <dd class="balance">{{ u.balance }} &euro;</dd>
+      </dl>
+    </div>
   </section>
 } @else {
   <p class="status">Caricamento profilo...</p>

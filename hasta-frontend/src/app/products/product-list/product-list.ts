@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ProductService } from '../product.service';
 import { Product } from '../product.model';
+import { CategoryService } from '../../core/services/category.service';
 
 @Component({
   selector: 'app-product-list',
@@ -13,6 +14,7 @@ import { Product } from '../product.model';
 })
 export class ProductList implements OnInit {
   private productService = inject(ProductService);
+  private categoryService = inject(CategoryService);
 
   products = signal<Product[]>([]);
   loading = signal(true);
@@ -34,13 +36,13 @@ export class ProductList implements OnInit {
       next: (data) => {
         this.products.set(data);
         this.loading.set(false);
-        },
-        error: (err) => {
-          this.error.set('Errore nel caricamento dei prodotti.');
-          this.loading.set(false);
-          console.error(err);
-        }
-      });
+      },
+      error: (err) => {
+        this.error.set('Errore nel caricamento dei prodotti.');
+        this.loading.set(false);
+        console.error(err);
+      }
+    });
   }
 
   buyNow(product: Product): void {
@@ -63,6 +65,10 @@ export class ProductList implements OnInit {
         console.error(err);
       }
     });
+  }
+
+  categoryLabel(category: string): string {
+    return this.categoryService.getLabel(category);
   }
 
   private extractErrorMessage(err: HttpErrorResponse): string {

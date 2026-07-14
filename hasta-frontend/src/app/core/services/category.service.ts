@@ -17,9 +17,22 @@ const CATALOG: CategoryInfo[] = [
   { id: Category.ALTRO, label: 'Altro', icon: 'box' },
 ];
 
+const BY_ID = new Map<Category, CategoryInfo>(CATALOG.map((c) => [c.id, c]));
+
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
   getAll(): CategoryInfo[] {
     return CATALOG;
+  }
+
+  getInfo(id: Category): CategoryInfo | undefined {
+    return BY_ID.get(id);
+  }
+
+  getLabel(category: Category | string | null | undefined): string {
+    if (!category) {
+      return '';
+    }
+    return BY_ID.get(category as Category)?.label ?? category.replace(/_/g, ' ');
   }
 }

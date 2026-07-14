@@ -1,14 +1,72 @@
+<section class="hero">
+  <p class="hero-eyebrow">Casa d'aste</p>
+  <h1 class="hero-title">Ogni lotto ha una storia.<br />Fai la tua offerta.</h1>
+  <div class="hero-ornament">
+    <span class="ornament-line"></span>
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+      <path d="M12 2l2.5 7.5H22l-6 4.5 2.5 7.5-6.5-4.5L5.5 21.5 8 14 2 9.5h7.5z" />
+    </svg>
+    <span class="ornament-line"></span>
+  </div>
+
+  @if (!loading() && !error()) {
+    <div class="stats-strip">
+      <div class="stat">
+        <span class="stat-value">{{ totalAuctions() }}</span>
+        <span class="stat-label">Lotti totali</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value accent">{{ activeAuctions().length }}</span>
+        <span class="stat-label">Aste attive</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ inactiveAuctions().length }}</span>
+        <span class="stat-label">Aste concluse</span>
+      </div>
+    </div>
+  }
+</section>
+
 <app-category-bar />
 
 <section class="auctions">
   @if (loading()) {
-    <p class="status">Caricamento aste...</p>
+    <div class="section-head">
+      <h2 class="section-title">Aste attive</h2>
+    </div>
+    <div class="auction-grid">
+      @for (slot of skeletonSlots; track slot) {
+        <div class="skeleton-card">
+          <div class="skeleton-art"></div>
+          <div class="skeleton-line w-70"></div>
+          <div class="skeleton-line w-40"></div>
+        </div>
+      }
+    </div>
   } @else if (error()) {
-    <p class="status error">{{ error() }}</p>
+    <div class="state-block error">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 8v5M12 16h.01" />
+      </svg>
+      <p>{{ error() }}</p>
+      <button class="retry-btn" type="button" (click)="load()">Riprova</button>
+    </div>
   } @else {
-    <h2 class="section-title">Aste attive</h2>
+    <div class="section-head">
+      <h2 class="section-title">
+        <span class="pulse-dot"></span> Aste attive
+        <span class="count">{{ activeAuctions().length }}</span>
+      </h2>
+    </div>
     @if (activeAuctions().length === 0) {
-      <p class="status">Nessuna asta attiva al momento.</p>
+      <div class="state-block">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 8l9-5 9 5-9 5-9-5z" />
+          <path d="M3 8v9l9 5 9-5V8" />
+        </svg>
+        <p>Nessuna asta attiva al momento.</p>
+      </div>
     } @else {
       <div class="auction-grid">
         @for (auction of activeAuctions(); track auction.id) {
@@ -17,9 +75,16 @@
       </div>
     }
 
-    <h2 class="section-title">Aste concluse</h2>
+    <div class="section-head">
+      <h2 class="section-title muted-dot">
+        <span class="static-dot"></span> Aste concluse
+        <span class="count">{{ inactiveAuctions().length }}</span>
+      </h2>
+    </div>
     @if (inactiveAuctions().length === 0) {
-      <p class="status">Nessuna asta conclusa.</p>
+      <div class="state-block">
+        <p>Nessuna asta conclusa.</p>
+      </div>
     } @else {
       <div class="auction-grid">
         @for (auction of inactiveAuctions(); track auction.id) {
