@@ -75,6 +75,7 @@
               </form>
 
               <div class="buy-now">
+                <span class="buy-now-price">Acquisto diretto: {{ formattedBuyNowPrice(a) }}</span>
                 @if (buyError()) {
                   <p class="error">{{ buyError() }}</p>
                 }

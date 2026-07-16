@@ -64,6 +64,9 @@ export class Sell implements OnInit {
       this.error.set('Compila tutti i campi.');
       return;
     }
+    if (this.price != null && this.startingPrice != null && this.price <= this.startingPrice) {
+      this.error.set('Il prezzo di acquisto diretto deve essere maggiore del prezzo di partenza dell\'asta.');
+    }
 
     this.submitting.set(true);
     this.error.set(null);
