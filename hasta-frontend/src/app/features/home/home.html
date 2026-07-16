@@ -27,7 +27,54 @@
   }
 </section>
 
-<app-category-bar />
+@if (featuredAuctions().length > 0) {
+  <section class="featured-section">
+    <div class="section-head">
+      <h2 class="section-title">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <path d="M12 2l2.5 7.5H22l-6 4.5 2.5 7.5-6.5-4.5L5.5 21.5 8 14 2 9.5h7.5z" />
+        </svg>
+        In evidenza
+      </h2>
+      <p class="featured-sub">I lotti con l'offerta più alta in questo momento.</p>
+    </div>
+    <div class="auction-grid">
+      @for (auction of featuredAuctions(); track auction.id; let i = $index) {
+        <div class="featured-item">
+          <span class="featured-rank">#{{ i + 1 }}</span>
+          <app-auction-card [auction]="auction" />
+        </div>
+      }
+    </div>
+  </section>
+}
+
+<section class="categories-showcase">
+  <h2 class="showcase-title">Sfoglia per categoria</h2>
+  <div class="category-tiles">
+    @for (tile of categoryTiles(); track tile.info.id) {
+      <a
+        class="category-tile"
+        [routerLink]="['/categoria', tile.info.id]"
+        [style.--cat-accent]="tile.info.accent"
+      >
+        <span class="tile-badge">
+          <app-category-icon [icon]="tile.info.icon" [size]="26" />
+        </span>
+        <span class="tile-label">{{ tile.info.label }}</span>
+        <span class="tile-count">{{ tile.activeCount }} in asta</span>
+      </a>
+    }
+  </div>
+</section>
+
+<div class="section-divider">
+  <span class="divider-line"></span>
+  <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true">
+    <path d="M12 2l2.5 7.5H22l-6 4.5 2.5 7.5-6.5-4.5L5.5 21.5 8 14 2 9.5h7.5z" />
+  </svg>
+  <span class="divider-line"></span>
+</div>
 
 <section class="auctions">
   @if (loading()) {

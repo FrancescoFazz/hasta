@@ -18,4 +18,6 @@ export interface CategoryInfo {
   id: Category;
   label: string;
   icon: string;
+  accent: string;
+  description: string;
 }

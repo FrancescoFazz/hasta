@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return !!this.accessToken();
+    return !!this.accessToken() && !this.isTokenExpired();
   }
 
   getDecodedToken(): DecodedToken | null {

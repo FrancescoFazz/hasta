@@ -1,21 +1,24 @@
 import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
-import { CategoryBar } from '../../layout/category-bar/category-bar';
+import { RouterLink } from '@angular/router';
 import { AuctionCard } from '../auction-card/auction-card';
+import { CategoryIcon } from '../../shared/category-icon/category-icon';
 import { AuctionService } from '../../core/services/auction.service';
+import { CategoryService } from '../../core/services/category.service';
 import { Auction, isAuctionActive } from '../../core/models/auction.model';
 
-// Numero di aste mostrate prima del pulsante "Vedi tutte", per attive e concluse.
 const PREVIEW_COUNT = 8;
+const FEATURED_COUNT = 4;
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CategoryBar, AuctionCard],
+  imports: [AuctionCard, CategoryIcon, RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
 export class Home implements OnInit {
   private auctionService = inject(AuctionService);
+  private categoryService = inject(CategoryService);
 
   private readonly auctions = signal<Auction[]>([]);
   readonly loading = signal(true);
@@ -33,7 +36,23 @@ export class Home implements OnInit {
   );
   readonly totalAuctions = computed(() => this.auctions().length);
 
-  // "Vedi tutte": finché è false si mostrano solo le prime PREVIEW_COUNT.
+  readonly featuredAuctions = computed(() =>
+    [...this.activeAuctions()]
+      .sort((a, b) => b.currentPrice - a.currentPrice)
+      .slice(0, FEATURED_COUNT),
+  );
+
+  readonly categoryTiles = computed(() => {
+    const auctions = this.auctions();
+    const now = this.now();
+    return this.categoryService.getAll().map((info) => ({
+      info,
+      activeCount: auctions.filter(
+        (a) => a.product.category === info.id && isAuctionActive(a, now),
+      ).length,
+    }));
+  });
+
   readonly showAllActive = signal(false);
   readonly showAllInactive = signal(false);
 

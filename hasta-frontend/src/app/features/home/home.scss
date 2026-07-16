@@ -76,6 +76,141 @@
   letter-spacing: 0.02em;
 }
 
+.featured-section {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0.6rem 1.5rem 1rem;
+}
+
+.featured-section .section-title svg {
+  color: var(--brass);
+  flex: 0 0 auto;
+}
+
+.featured-sub {
+  margin: 0.3rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.featured-item {
+  position: relative;
+}
+
+.featured-rank {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper-raised);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(28, 26, 23, 0.25);
+}
+
+.categories-showcase {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0.4rem 1.5rem 2.2rem;
+}
+
+.showcase-title {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 1.1rem;
+  text-align: center;
+}
+
+.category-tiles {
+  display: flex;
+  gap: 0.9rem;
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+  scrollbar-width: thin;
+}
+
+.category-tile {
+  --cat-accent: var(--muted);
+  flex: 0 0 auto;
+  width: 132px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.2rem 0.8rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  text-decoration: none;
+  color: var(--ink);
+  text-align: center;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.category-tile:hover {
+  transform: translateY(-3px);
+  border-color: var(--cat-accent);
+  box-shadow: 0 8px 20px rgba(28, 26, 23, 0.08);
+}
+
+.tile-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  color: var(--cat-accent);
+  background: var(--paper);
+  background: color-mix(in srgb, var(--cat-accent) 14%, var(--paper-raised));
+}
+
+.tile-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.tile-count {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  color: var(--muted);
+}
+
+.category-tile:hover .tile-count {
+  color: var(--cat-accent);
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0.4rem 1.5rem 2rem;
+  color: var(--brass);
+}
+
+.section-divider .divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--line));
+}
+
+.section-divider .divider-line:last-child {
+  background: linear-gradient(to left, transparent, var(--line));
+}
+
 .auctions {
   max-width: var(--content-max);
   margin: 0 auto;

@@ -1,21 +1,105 @@
-.category-header {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+.category-hero {
+  --cat-accent: var(--muted);
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: 1.6rem 1.5rem 0;
+  padding: 1.8rem 1.5rem 1.6rem;
 }
 
-.category-header-icon {
-  display: inline-flex;
-  color: var(--brass);
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 1.2rem;
 }
 
-.category-header h1 {
+.breadcrumb a {
+  text-decoration: none;
+  color: var(--muted);
+  transition: color 0.15s ease;
+}
+
+.breadcrumb a:hover {
+  color: var(--cat-accent);
+}
+
+.crumb-sep {
+  opacity: 0.6;
+}
+
+.crumb-current {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.category-hero-main {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.category-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  color: var(--cat-accent);
+  /* Fallback semplice se color-mix non è supportato, poi la versione sfumata. */
+  background: var(--paper);
+  background: color-mix(in srgb, var(--cat-accent) 14%, var(--paper-raised));
+  border: 1px solid var(--line);
+  border-color: color-mix(in srgb, var(--cat-accent) 30%, var(--line));
+}
+
+.category-hero-main h1 {
   font-family: var(--font-display);
-  margin: 0;
+  font-size: clamp(1.6rem, 3.4vw, 2.1rem);
+  margin: 0 0 0.3rem;
   text-transform: capitalize;
+  color: var(--ink);
+}
+
+.category-description {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  max-width: 46ch;
+  line-height: 1.4;
+}
+
+.category-stats {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.stat-value.accent {
+  color: var(--cat-accent);
+}
+
+.stat-label {
+  font-size: 0.68rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
 }
 
 .auction-grid {
@@ -24,12 +108,103 @@
   gap: 1.1rem;
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: 1.1rem 1.5rem 2.5rem;
+  padding: 0.4rem 1.5rem 2.5rem;
 }
 
-.status {
+.state-block {
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: 1.5rem;
+  padding: 2.5rem 1.5rem;
   color: var(--muted);
+  text-align: center;
+}
+
+.state-block svg {
+  width: 32px;
+  height: 32px;
+  opacity: 0.5;
+  margin-bottom: 0.6rem;
+}
+
+/* Skeleton di caricamento: stesso pattern di home.scss. */
+.skeleton-card {
+  border-radius: 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  overflow: hidden;
+  padding-bottom: 1rem;
+}
+
+.skeleton-art {
+  aspect-ratio: 4 / 3;
+  background: var(--line);
+}
+
+.skeleton-line {
+  height: 0.65rem;
+  margin: 0.7rem 1rem 0;
+  border-radius: 0.2rem;
+  background: var(--line);
+}
+
+.skeleton-line.w-70 { width: 70%; }
+.skeleton-line.w-40 { width: 40%; margin-top: 0.5rem; }
+
+.skeleton-art,
+.skeleton-line {
+  position: relative;
+  overflow: hidden;
+}
+
+.skeleton-art::after,
+.skeleton-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+.browse-more {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0.5rem 1.5rem 3rem;
+}
+
+.browse-more h2 {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin: 0 0 0.9rem;
+}
+
+.browse-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.browse-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.78rem;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.browse-chip:hover {
+  border-color: var(--brass);
+  color: var(--brass);
 }

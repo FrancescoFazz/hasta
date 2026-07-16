@@ -8,11 +8,15 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = authService.accessToken();
   const isApiRequest = req.url.startsWith(environment.apiUrl);
 
-  if (token && isApiRequest) {
+  if (token && isApiRequest && !authService.isTokenExpired()) {
     const authReq = req.clone({
       setHeaders: { Authorization: `Bearer ${token}` },
     });
     return next(authReq);
+  }
+
+  if (token && isApiRequest && authService.isTokenExpired()) {
+    authService.logout();
   }
 
   return next(req);
