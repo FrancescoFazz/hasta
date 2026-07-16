@@ -13,6 +13,7 @@ export interface AuctionProductRef {
   description: string;
   quantity: number;
   category: Category;
+  price: number;
 }
 
 export interface Auction {

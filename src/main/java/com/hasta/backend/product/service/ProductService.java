@@ -1,5 +1,6 @@
 package com.hasta.backend.product.service;
 
+import com.hasta.backend.auction.model.Auction;
 import com.hasta.backend.auction.repository.AuctionRepository;
 import com.hasta.backend.exception.ApplicationException;
 import com.hasta.backend.exception.enums.ProductException;
@@ -18,8 +19,7 @@ import com.hasta.backend.user.model.User;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -111,21 +111,48 @@ public class ProductService {
             throw new ApplicationException(ProductException.CANNOT_BUY_OWN_PRODUCT);
         }
 
-        Long firstId = Math.min(buyerId, sellerId);
-        Long secondId = Math.max(buyerId, sellerId);
+        Auction activeAuction = auctionRepository.findActiveAuctionByProductIdForUpdate(productId)
+                .orElse(null);
 
-        User first = userRepository.findByIdForUpdate(firstId)
-                .orElseThrow(() -> new ApplicationException(UserException.NOT_FOUND));
+        if (activeAuction != null && product.getPrice().compareTo(activeAuction.getStartingPrice()) <= 0) {
+            throw new ApplicationException(ProductException.PRICE_TOO_LOW_FOR_AUCTION);
+        }
 
-        User second = firstId.equals(secondId) ? first : userRepository.findByIdForUpdate(secondId)
-                .orElseThrow(() -> new ApplicationException(UserException.NOT_FOUND));
+        Long previousWinnerId = (activeAuction != null && activeAuction.getWinner() != null)
+                ? activeAuction.getWinner().getId()
+                : null;
 
-        User buyer = buyerId.equals(firstId) ? first : second;
-        User seller = sellerId.equals(firstId) ? first : second;
+        SortedSet<Long> userIdsToLock = new TreeSet<>(List.of(buyerId, sellerId));
+        if (previousWinnerId != null) {
+            userIdsToLock.add(previousWinnerId);
+        }
+
+        Map<Long, User> lockedUsers = new HashMap<>();
+        for (Long id : userIdsToLock) {
+            User u = userRepository.findByIdForUpdate(id)
+                    .orElseThrow(() -> new ApplicationException(UserException.NOT_FOUND));
+            lockedUsers.put(id, u);
+        }
+
+        User buyer = lockedUsers.get(buyerId);
+        User seller = lockedUsers.get(sellerId);
+
         BigDecimal price = product.getPrice();
 
-        if (buyer.getBalance().compareTo(price) < 0)
+        if (buyer.getBalance().compareTo(price) < 0) {
             throw new ApplicationException(UserException.INSUFFICIENT_CREDIT);
+        }
+
+        if (activeAuction != null) {
+            if (previousWinnerId != null) {
+                User previousWinner = lockedUsers.get(previousWinnerId);
+                previousWinner.setBalance(previousWinner.getBalance().add(activeAuction.getCurrentPrice()));
+                userRepository.save(previousWinner);
+            }
+            activeAuction.setWinner(null);
+            activeAuction.setEndTime(Instant.now());
+            auctionRepository.save(activeAuction);
+        }
 
         int purchasedQuantity = product.getQuantity();
 
@@ -137,18 +164,6 @@ public class ProductService {
 
         product.setQuantity(0);
         productRepository.save(product);
-
-        auctionRepository.findFirstByProduct_IdAndSoldFalseAndEndTimeAfter(productId, Instant.now())
-                .ifPresent(auction -> {
-                    if (auction.getWinner() != null) {
-                        User currentBidder = userRepository.findByIdForUpdate(auction.getWinner().getId())
-                                .orElseThrow(() -> new ApplicationException(UserException.NOT_FOUND));
-                        currentBidder.setBalance(currentBidder.getBalance().add(auction.getCurrentPrice()));
-                        userRepository.save(currentBidder);
-                    }
-                    auction.setSold(true);
-                    auctionRepository.save(auction);
-                });
 
         Purchase purchase = new Purchase();
         purchase.setProduct(product);

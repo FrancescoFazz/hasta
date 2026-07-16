@@ -104,6 +104,10 @@ export class AuctionDetail implements OnInit {
     return formatCurrency(auction.startingPrice);
   }
 
+  formattedBuyNowPrice(auction: Auction): string {
+    return formatCurrency(auction.product.price);
+  }
+
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
@@ -149,7 +153,11 @@ export class AuctionDetail implements OnInit {
       },
       error: (err: HttpErrorResponse) => {
         this.buySubmitting.set(false);
-        this.buyError.set('Acquisto non riuscito. Riprova.');
+        if (err.status === 409) {
+          this.buyError.set('Il prezzo di acquisto diretto non è più valido per questa asta.');
+        } else {
+          this.buyError.set('Acquisto non riuscito. Riprova.');
+        }
         console.error(err);
       },
     });
