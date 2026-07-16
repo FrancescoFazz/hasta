@@ -1,28 +1,43 @@
-@if (user(); as u) {
+@if (loading()) {
+  <section class="profile-page">
+    <div class="profile-card is-loading" aria-hidden="true">
+      <div class="skel-seal"></div>
+      <div class="skel-line w-60"></div>
+      <div class="skel-line w-40"></div>
+      <div class="ticket-divider"></div>
+      <div class="skel-line w-30 centered"></div>
+      <div class="skel-line w-50 centered tall"></div>
+    </div>
+  </section>
+} @else if (user(); as u) {
   <section class="profile-page">
     <div class="profile-card">
-      <span class="profile-avatar">{{ u.name.charAt(0) }}{{ u.surname.charAt(0) }}</span>
+      <span class="profile-seal">{{ u.name.charAt(0) }}{{ u.surname.charAt(0) }}</span>
       <h1>{{ u.name }} {{ u.surname }}</h1>
       <span class="profile-username">&#64;{{ u.username }}</span>
+      <span class="profile-email">{{ u.email }}</span>
+      <span class="member-meta">Tessera N&#176;{{ memberNumber() }} &middot; membro da {{ memberSince() }}</span>
 
-      <dl>
-        <dt>Email</dt>
-        <dd>{{ u.email }}</dd>
-        <dt>Credito</dt>
-        <dd class="balance">{{ formattedBalance(u.balance) }}</dd>
-      </dl>
+      <div class="ticket-divider"></div>
+
+      <div class="balance-hero">
+        <span class="balance-label">Saldo disponibile</span>
+        <span class="balance-value">{{ formattedBalance(u.balance) }}</span>
+      </div>
+
+      <div class="ticket-divider"></div>
 
       <div class="credit-box">
-        <span class="credit-label">Aggiungi credito (fittizio)</span>
-        <div class="credit-buttons">
+        <span class="credit-label">Ricarica saldo (fittizia)</span>
+        <div class="coin-row">
           @for (amount of topUpAmounts; track amount) {
             <button
               type="button"
-              class="credit-btn"
+              class="coin-btn"
               (click)="addCredit(amount)"
               [disabled]="chargingAmount() !== null"
             >
-              {{ chargingAmount() === amount ? '...' : '+' + amount + ' €' }}
+              {{ chargingAmount() === amount ? '···' : '+' + amount }}
             </button>
           }
         </div>
@@ -31,9 +46,108 @@
         }
       </div>
 
-      <a routerLink="/vendi" class="sell-link">Pubblica un'asta</a>
+      <a routerLink="/vendi" class="sell-cta">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2l2.5 7.5H22l-6 4.5 2.5 7.5-6.5-4.5L5.5 21.5 8 14 2 9.5h7.5z" />
+        </svg>
+        Pubblica un'asta
+      </a>
+    </div>
+
+    <div class="ledger-card">
+      <h2>Il tuo registro</h2>
+
+      <div class="stat-strip">
+        <div class="stat">
+          <span class="stat-value">{{ stats().selling }}</span>
+          <span class="stat-label">In vendita</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ stats().winning }}</span>
+          <span class="stat-label">In corso</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ stats().won }}</span>
+          <span class="stat-label">Aggiudicate</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ stats().purchases }}</span>
+          <span class="stat-label">Acquisti</span>
+        </div>
+      </div>
+
+      @if (activityLoading()) {
+        <div class="ledger-section">
+          <div class="skel-line w-40"></div>
+          <div class="skel-line w-70"></div>
+          <div class="skel-line w-55"></div>
+        </div>
+      } @else {
+        <div class="ledger-section">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 11V5a2 2 0 0 1 2-2h6l10 10-8 8L3 11z" />
+              <circle cx="7.5" cy="7.5" r="1.1" />
+            </svg>
+            Le tue aste in vendita
+          </h3>
+          @if (mySelling().length === 0) {
+            <p class="empty-row">Non hai ancora pubblicato nessuna asta.</p>
+          } @else {
+            @for (a of mySelling(); track a.id) {
+              <a class="ledger-row" [routerLink]="['/aste', a.id]">
+                <span class="row-name">{{ a.product.name }}</span>
+                <span class="row-status" [class.is-live]="isActive(a)">{{ isActive(a) ? 'In corso' : 'Conclusa' }}</span>
+                <span class="row-amount">{{ formattedAmount(a.currentPrice) }}</span>
+              </a>
+            }
+          }
+        </div>
+
+        <div class="ledger-section">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M8 12l3 3 5-6" />
+            </svg>
+            Aste che stai vincendo o hai vinto
+          </h3>
+          @if (myWinning().length === 0) {
+            <p class="empty-row">Nessuna offerta vincente al momento.</p>
+          } @else {
+            @for (a of myWinning(); track a.id) {
+              <a class="ledger-row" [routerLink]="['/aste', a.id]">
+                <span class="row-name">{{ a.product.name }}</span>
+                <span class="row-status" [class.is-live]="isActive(a)">{{ isActive(a) ? 'In corso' : 'Conclusa' }}</span>
+                <span class="row-amount">{{ formattedAmount(a.currentPrice) }}</span>
+              </a>
+            }
+          }
+        </div>
+
+        <div class="ledger-section">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M6 8h12l-1 12H7L6 8z" />
+              <path d="M9 8V6a3 3 0 0 1 6 0v2" />
+            </svg>
+            I tuoi acquisti diretti
+          </h3>
+          @if (myPurchases().length === 0) {
+            <p class="empty-row">Nessun acquisto diretto ancora.</p>
+          } @else {
+            @for (p of myPurchases(); track p.id) {
+              <div class="ledger-row is-static">
+                <span class="row-name">{{ p.product.name }}</span>
+                <span class="row-status">{{ formattedDate(p.createdAt) }}</span>
+                <span class="row-amount">{{ formattedAmount(p.price) }}</span>
+              </div>
+            }
+          }
+        </div>
+      }
     </div>
   </section>
 } @else {
-  <p class="status">Caricamento profilo...</p>
+  <p class="status">Non è stato possibile caricare il profilo.</p>
 }

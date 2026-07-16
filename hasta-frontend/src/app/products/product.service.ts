@@ -30,4 +30,8 @@ export class ProductService {
   buyNow(productId: number, buyerId: number): Observable<Purchase> {
     return this.http.post<Purchase>(`${this.baseUrl}/${productId}/purchase`, { buyerId });
   }
+
+  getMyPurchases(): Observable<Purchase[]> {
+    return this.http.get<Purchase[]>(`${environment.apiUrl}/purchases/me`);
+  }
 }

@@ -1,24 +1,76 @@
 <app-category-bar />
 
-<div class="category-header">
-  @if (categoryInfo(); as info) {
-    <span class="category-header-icon">
-      <app-category-icon [icon]="info.icon" [size]="28" />
+<section class="category-hero" [style.--cat-accent]="categoryInfo()?.accent ?? 'var(--muted)'">
+  <nav class="breadcrumb" aria-label="Percorso">
+    <a routerLink="/">Hasta</a>
+    <span class="crumb-sep">/</span>
+    <span class="crumb-current">{{ categoryInfo()?.label ?? category() }}</span>
+  </nav>
+
+  <div class="category-hero-main">
+    <span class="category-badge">
+      @if (categoryInfo(); as info) {
+        <app-category-icon [icon]="info.icon" [size]="34" />
+      }
     </span>
-    <h1>{{ info.label }}</h1>
-  } @else {
-    <h1>{{ category() }}</h1>
+    <div>
+      <h1>{{ categoryInfo()?.label ?? category() }}</h1>
+      @if (categoryInfo(); as info) {
+        <p class="category-description">{{ info.description }}</p>
+      }
+    </div>
+  </div>
+
+  @if (!loading()) {
+    <div class="category-stats">
+      <div class="stat">
+        <span class="stat-value">{{ auctions().length }}</span>
+        <span class="stat-label">Lotti totali</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value accent">{{ activeCount() }}</span>
+        <span class="stat-label">Attive ora</span>
+      </div>
+    </div>
   }
-</div>
+</section>
 
 @if (loading()) {
-  <p class="status">Caricamento...</p>
+  <div class="auction-grid">
+    @for (slot of skeletonSlots; track slot) {
+      <div class="skeleton-card">
+        <div class="skeleton-art"></div>
+        <div class="skeleton-line w-70"></div>
+        <div class="skeleton-line w-40"></div>
+      </div>
+    }
+  </div>
 } @else if (auctions().length === 0) {
-  <p class="status">Nessuna asta in questa categoria.</p>
+  <div class="state-block">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M3 8l9-5 9 5-9 5-9-5z" />
+      <path d="M3 8v9l9 5 9-5V8" />
+    </svg>
+    <p>Nessuna asta in {{ categoryInfo()?.label ?? category() }} al momento.</p>
+  </div>
 } @else {
   <div class="auction-grid">
     @for (auction of auctions(); track auction.id) {
       <app-auction-card [auction]="auction" />
     }
   </div>
+}
+
+@if (otherCategories().length > 0) {
+  <section class="browse-more">
+    <h2>Altre categorie</h2>
+    <div class="browse-chips">
+      @for (cat of otherCategories(); track cat.id) {
+        <a class="browse-chip" [routerLink]="['/categoria', cat.id]">
+          <app-category-icon [icon]="cat.icon" [size]="16" />
+          {{ cat.label }}
+        </a>
+      }
+    </div>
+  </section>
 }
