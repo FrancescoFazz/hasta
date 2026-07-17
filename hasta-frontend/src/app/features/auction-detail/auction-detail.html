@@ -52,6 +52,19 @@
         @if (isLoggedIn()) {
           @if (isSeller()) {
             <p class="seller-notice">Questa è la tua asta: non puoi fare offerte o acquistarla.</p>
+            <div class="actions">
+              @if (cancelError()) {
+                <p class="error">{{ cancelError() }}</p>
+              }
+              <button
+                type="button"
+                class="btn btn-danger"
+                (click)="cancelAuction()"
+                [disabled]="cancelSubmitting()"
+              >
+                {{ cancelSubmitting() ? 'Chiusura in corso...' : 'Chiudi asta in anticipo' }}
+              </button>
+            </div>
           } @else {
             <div class="actions">
               <form class="bid-form" (ngSubmit)="submitBid()">

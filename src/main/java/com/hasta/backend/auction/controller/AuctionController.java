@@ -1,6 +1,7 @@
 package com.hasta.backend.auction.controller;
 
 import com.hasta.backend.auction.model.Auction;
+import com.hasta.backend.auction.model.CancelAuctionRequest;
 import com.hasta.backend.auction.model.CreateAuctionRequest;
 import com.hasta.backend.auction.model.PlaceBidRequest;
 import com.hasta.backend.auction.service.AuctionService;
@@ -47,5 +48,10 @@ public class AuctionController {
             @PathVariable Long id,
             @RequestBody @Valid PlaceBidRequest request) {
         auctionService.placeBid(id, request.getUserId(), request.getAmount());
+    }
+    @PostMapping("/{id}/cancel")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void cancelAuction(@PathVariable Long id, @RequestBody @Valid CancelAuctionRequest request) {
+        auctionService.cancelAuction(id, request.getSellerId());
     }
 }
