@@ -11,7 +11,8 @@ public enum AuctionException implements ApplicationExceptionEnum {
     ALREADY_CLOSED("auction.already-closed", "Auction is already closed", 400),
     PAST_END_TIME("auction.past-end-time", "Auction end time must be in the future", 400),
     BID_TOO_LOW("auction.bid-too-low", "Bid amount must be greater than the current price or starting price", 400),
-    ALREADY_HIGHEST_BIDDER("auction.already-highest-bidder", "You are already the highest bidder", 400);
+    ALREADY_HIGHEST_BIDDER("auction.already-highest-bidder", "You are already the highest bidder", 400),
+    NOT_OWNER("auction.not-owner", "Only the auction owner can perform this action", 403);
 
     private final String code;
     private final String message;

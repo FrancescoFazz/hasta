@@ -162,4 +162,29 @@ export class AuctionDetail implements OnInit {
       },
     });
   }
+  readonly cancelSubmitting = signal(false);
+  readonly cancelError = signal<string | null>(null);
+
+  cancelAuction(): void {
+    const a = this.auction();
+    const user = this.currentUser();
+    if (!a || !user) {
+      return;
+    }
+
+    this.cancelSubmitting.set(true);
+    this.cancelError.set(null);
+
+    this.auctionService.cancelAuction(a.id, user.id).subscribe({
+      next: () => {
+        this.cancelSubmitting.set(false);
+        this.loadAuction();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.cancelSubmitting.set(false);
+        this.cancelError.set('Impossibile chiudere in anticipo questa asta.');
+        console.error(err);
+      },
+    });
+  }
 }

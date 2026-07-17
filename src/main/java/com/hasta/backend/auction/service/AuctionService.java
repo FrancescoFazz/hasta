@@ -141,4 +141,35 @@ public class AuctionService {
         bid.setAuction(auction);
         bidRepository.save(bid);
     }
+    @Transactional
+    public void cancelAuction(Long auctionId, Long sellerId) {
+        Auction auction = auctionRepository.findByIdForUpdate(auctionId)
+                .orElseThrow(() -> new ApplicationException(AuctionException.NOT_FOUND));
+
+        if (!auction.getSeller().getId().equals(sellerId)) {
+            throw new ApplicationException(AuctionException.NOT_OWNER);
+        }
+
+        if (auction.isSold() || auction.getFinalPrice() != null
+                || (auction.getEndTime() != null && Instant.now().isAfter(auction.getEndTime()))) {
+            throw new ApplicationException(AuctionException.ALREADY_CLOSED);
+        }
+
+        User currentWinner = auction.getWinner();
+        if (currentWinner != null) {
+            User winnerLocked = userRepository.findByIdForUpdate(currentWinner.getId())
+                    .orElseThrow(() -> new ApplicationException(UserException.NOT_FOUND));
+            winnerLocked.setBalance(winnerLocked.getBalance().add(auction.getCurrentPrice()));
+            userRepository.save(winnerLocked);
+
+            auction.setWinner(null);
+            auction.setCurrentPrice(auction.getStartingPrice());
+        }
+
+        auction.setEndTime(Instant.now());
+        auction.setSold(false);
+        auction.setFinalPrice(BigDecimal.ZERO);
+
+        auctionRepository.save(auction);
+    }
 }
